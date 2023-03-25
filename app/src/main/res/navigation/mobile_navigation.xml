@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_trips">
+
+    <fragment
+        android:id="@+id/navigation_trips"
+        android:name="com.example.parapo.ui.home.TripsFragment"
+        android:label="@string/title_trips"
+        tools:layout="@layout/fragment_trips" />
+
+    <fragment
+        android:id="@+id/navigation_track"
+        android:name="com.example.parapo.ui.dashboard.TrackFragment"
+        android:label="@string/title_track"
+        tools:layout="@layout/fragment_track" />
+
+    <fragment
+        android:id="@+id/navigation_traveler"
+        android:name="com.example.parapo.ui.notifications.TravelerFragment"
+        android:label="@string/title_traveler"
+        tools:layout="@layout/fragment_traveler" />
+</navigation>
