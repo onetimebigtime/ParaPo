@@ -9,7 +9,7 @@
         android:id="@+id/navigation_trips"
         android:name="com.example.parapo.ui.home.TripsFragment"
         android:label="@string/title_trips"
-        tools:layout="@layout/fragment_trips" />
+        tools:layout="@layout/fragment_trips"/>
 
     <fragment
         android:id="@+id/navigation_track"

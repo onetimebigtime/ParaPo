@@ -3,4 +3,7 @@
     <string name="title_trips">Trips</string>
     <string name="title_track">Track</string>
     <string name="title_traveler">Traveler</string>
+    <string name="fullname">LastName, FirstName</string>
+    <string name="birthday">mm/dd/yyyy</string>
+    <string name="email_address">email@address.com</string>
 </resources>
