@@ -25,8 +25,7 @@
                 android:id="@+id/layout_head"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:background="@color/purple_500"
-                android:radius="20dp">
+                android:background="@color/purple_500">
 
                 <RelativeLayout
                     android:id="@+id/RL_ImageView"
@@ -48,17 +47,17 @@
                             app:civ_border_color="@color/black"/>
                     </androidx.cardview.widget.CardView>
                 </RelativeLayout>
-
                 <TextView
                     android:id="@+id/textView_fullName1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/RL_ImageView"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="250dp"
+                    android:layout_marginTop="5dp"
                     android:hint="@string/fullname"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@color/white"/>
+                    android:textColor="@android:color/white" />
             </RelativeLayout>
 
             <!--Name Details-->
