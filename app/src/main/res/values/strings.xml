@@ -6,4 +6,8 @@
     <string name="fullname">LastName, FirstName</string>
     <string name="birthday">mm/dd/yyyy</string>
     <string name="email_address">email@address.com</string>
+    <string name="traveler_logo">Traveler Logo</string>
+    <string name="birthday_logo">Birthday Logo</string>
+    <string name="email_logo">Email Logo</string>
+    <string name="logout">LogOut</string>
 </resources>
