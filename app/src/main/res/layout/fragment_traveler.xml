@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.notifications.TravelerFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintBottom_toBottomOf="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!--Profile Picture Container-->
         <RelativeLayout
@@ -22,21 +26,22 @@
                 android:id="@+id/RL_imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="40dp"
                     android:elevation="5dp"
-                    app:cardCornerRadius="100dp"
-                    app:cardBackgroundColor="@color/white">
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="100dp">
                     <!--Profile Picture-->
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:src="@drawable/ic_no_profile"
-                        app:civ_border_width="5dp"
-                        app:civ_border_color="@color/white"/>
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="5dp" />
                 </androidx.cardview.widget.CardView>
                 <!--Profile Picture-->
             </RelativeLayout>
@@ -61,8 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
@@ -84,7 +89,7 @@
                 android:layout_marginStart="52dp"
                 android:hint="@string/fullname"
                 android:padding="5dp"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </RelativeLayout>
         <!--Name Details-->
         <!--Birthday Details-->
@@ -99,13 +104,15 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             tools:ignore="RtlSymmetry">
+
             <ImageView
                 android:id="@+id/ic_birthday"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_birthday"
-                android:contentDescription="@string/birthday_logo"/>
+                android:contentDescription="@string/birthday_logo" />
+
             <TextView
                 android:id="@+id/textView_birthday"
                 android:layout_width="wrap_content"
@@ -113,8 +120,8 @@
                 android:layout_alignStart="@id/ic_birthday"
                 android:layout_marginStart="50dp"
                 android:hint="@string/birthday"
-                android:textSize="18sp"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:textSize="18sp" />
         </RelativeLayout>
         <!--Birthday Details-->
         <!--Email Details-->
@@ -129,6 +136,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             tools:ignore="RtlSymmetry">
+
             <ImageView
                 android:id="@+id/ic_email_address"
                 android:layout_width="40dp"
@@ -136,6 +144,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/ic_email_address"
                 android:contentDescription="@string/email_logo" />
+
             <TextView
                 android:id="@+id/textView_email_address"
                 android:layout_width="wrap_content"
@@ -143,8 +152,8 @@
                 android:layout_alignStart="@id/ic_email_address"
                 android:layout_marginStart="50dp"
                 android:hint="@string/email_address"
-                android:textSize="18sp"
-                android:padding="5dp"/>
+                android:padding="5dp"
+                android:textSize="18sp" />
         </RelativeLayout>
         <!--Email Details-->
         <!--Button for Log out-->
