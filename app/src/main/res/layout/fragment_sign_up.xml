@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeContainerSignUp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"> <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--Logo and SignUp text Container-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/RL_logoView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!--ParaPo Logo-->
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/imageView_logo1"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_no_profile"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="5dp" />
+                <!--ParaPo Logo-->
+            </RelativeLayout>
+            <!--SignUp text-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/RL_logoView"
+                android:layout_marginTop="1dp"
+                android:layout_marginStart="25dp"
+                android:padding="10dp"
+                android:text="@string/signup_label"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/parapo_text_color"/>
+            <!--SignUp text-->
+        </RelativeLayout>
+        <!--Logo and SignUp text Container-->
+        <!--ParaPo Form Container-->
+        <!--Full name container-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" >
+            <TextView
+                android:id="@+id/fullName_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/fullname_label"
+                android:textColor="@color/parapo_text_color"/>
+
+            <EditText
+                android:id="@+id/fullName_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/fullName_label"
+                android:background="@android:color/transparent"
+                android:hint="@string/fullname"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textSize="@string/text_18"
+                android:inputType="textPersonName"
+                android:autofillHints="true"
+                android:textColor="@color/parapo_text_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/fullName_text"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/darker_gray"/>
+        </RelativeLayout>
+        <!--Full name container-->
+        <!--email container-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" >
+            <TextView
+                android:id="@+id/emailAddress_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/email_label"/>
+
+            <EditText
+                android:id="@+id/emailAddress_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/emailAddress_label"
+                android:hint="@string/email_address"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:background="@android:color/transparent"
+                android:textSize="@string/text_18"
+                android:inputType="textEmailAddress"
+                android:autofillHints="true" /><!--android:textColor="@color/editTextColor"-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/emailAddress_text"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/darker_gray"/>
+        </RelativeLayout>
+        <!--email container-->
+        <!--birthday container-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" >
+            <TextView
+                android:id="@+id/birthDate_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/birthdate_label"
+                android:textColor="@color/parapo_text_color"/>
+
+            <EditText
+                android:id="@+id/birthDate_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/birthDate_label"
+                android:background="@android:color/transparent"
+                android:hint="@string/birthday"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textSize="@string/text_18"
+                android:inputType="date"
+                android:autofillHints="true"
+                android:textColor="@color/parapo_text_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/birthDate_text"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/darker_gray"/>
+        </RelativeLayout>
+        <!--birthday container-->
+        <!--password container-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" >
+            <TextView
+                android:id="@+id/password_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/pass_label"/>
+
+            <EditText
+                android:id="@+id/password_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/password_label"
+                android:background="@android:color/transparent"
+                android:hint="@string/pass_label"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textSize="@string/text_18"
+                android:inputType="textPassword"
+                android:autofillHints="123"/> <!--android:textColor="@color/editTextColor"-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/password_text"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/darker_gray"/>
+        </RelativeLayout>
+        <!--password container-->
+        <!--confirm password container-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp">
+            <TextView
+                android:id="@+id/confirmPass_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/confirmpass_label"/>
+
+            <EditText
+                android:id="@+id/confirmPass_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/confirmPass_label"
+                android:background="@android:color/transparent"
+                android:hint="@string/confirmpass_label"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textSize="@string/text_18"
+                android:inputType="textPassword"
+                android:textColor="@color/parapo_text_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/confirmPass_text"
+                android:layout_centerHorizontal="true"
+                android:background="@color/parapo_text_lightcolor"/>
+        </RelativeLayout>
+        <!--password container-->
+        <!--SignUp Button-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" >
+            <Button
+                android:id="@+id/signUpBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_label"/>
+        </RelativeLayout>
+        <!--SignUp Button-->
+        <!--Cancel Button-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp" >
+            <Button
+                android:id="@+id/signupcancelBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_label"/>
+        </RelativeLayout>
+        <!--Cancel Button-->
+        <!--ParaPo Form Container-->
+    </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
