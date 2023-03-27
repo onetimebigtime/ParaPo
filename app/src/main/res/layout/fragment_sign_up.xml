@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeContainerSignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_color"> <!--xmlns:tools="http://schemas.android.com/tools"-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -242,6 +244,19 @@
                 android:text="@string/have_acc_label"/>
         </RelativeLayout>
         <!--Cancel Button-->
+        <ProgressBar
+            android:id="@+id/signup_progressbar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="-310dp"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
         <!--ParaPo Form Container-->
     </LinearLayout>
+
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
