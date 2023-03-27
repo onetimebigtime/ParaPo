@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeContainerSignUp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"> <!--xmlns:tools="http://schemas.android.com/tools"-->
+    android:layout_height="match_parent"
+    android:background="@color/main_color"> <!--xmlns:tools="http://schemas.android.com/tools"-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +24,7 @@
                 <!--ParaPo Logo-->
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="25dp"
                     android:id="@+id/imageView_logo1"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
@@ -52,40 +53,32 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp" >
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp" >
             <TextView
-                android:id="@+id/fullName_label"
+                android:id="@+id/signup_fullname_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:text="@string/fullname_label"
                 android:textColor="@color/parapo_text_color"/>
 
             <EditText
-                android:id="@+id/fullName_text"
+                android:id="@+id/signup_fullname_text"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/fullName_label"
+                android:layout_height="48dp"
+                android:layout_below="@id/signup_fullname_label"
                 android:background="@android:color/transparent"
                 android:hint="@string/fullname"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:textSize="@string/text_18"
                 android:inputType="textPersonName"
-                android:autofillHints="true"
                 android:textColor="@color/parapo_text_color"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/fullName_text"
+                android:layout_below="@id/signup_fullname_text"
                 android:layout_centerHorizontal="true"
-                android:background="@android:color/darker_gray"/>
+                android:background="@color/parapo_text_lightcolor"/>
         </RelativeLayout>
         <!--Full name container-->
         <!--email container-->
@@ -93,37 +86,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp" >
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp" >
             <TextView
-                android:id="@+id/emailAddress_label"
+                android:id="@+id/signup_email_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="@string/email_label"/>
+                android:text="@string/email_label"
+                android:textColor="@color/parapo_text_color"/>
 
             <EditText
-                android:id="@+id/emailAddress_text"
+                android:id="@+id/signup_email_text"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/emailAddress_label"
+                android:layout_height="48dp"
+                android:layout_below="@id/signup_email_label"
                 android:hint="@string/email_address"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:background="@android:color/transparent"
                 android:textSize="@string/text_18"
                 android:inputType="textEmailAddress"
-                android:autofillHints="true" /><!--android:textColor="@color/editTextColor"-->
+                android:textColor="@color/parapo_text_lightcolor"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/emailAddress_text"
+                android:layout_below="@id/signup_email_text"
                 android:layout_centerHorizontal="true"
-                android:background="@android:color/darker_gray"/>
+                android:background="@color/parapo_text_lightcolor"/>
         </RelativeLayout>
         <!--email container-->
         <!--birthday container-->
@@ -131,39 +119,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp" >
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp" >
             <TextView
-                android:id="@+id/birthDate_label"
+                android:id="@+id/signup_birthdate_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:text="@string/birthdate_label"
                 android:textColor="@color/parapo_text_color"/>
 
             <EditText
-                android:id="@+id/birthDate_text"
+                android:id="@+id/signup_birthdate_text"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/birthDate_label"
+                android:layout_height="48dp"
+                android:layout_below="@id/signup_birthdate_label"
                 android:background="@android:color/transparent"
                 android:hint="@string/birthday"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:textSize="@string/text_18"
                 android:inputType="date"
-                android:autofillHints="true"
                 android:textColor="@color/parapo_text_color"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/birthDate_text"
+                android:layout_below="@id/signup_birthdate_text"
                 android:layout_centerHorizontal="true"
-                android:background="@android:color/darker_gray"/>
+                android:background="@color/parapo_text_lightcolor"/>
         </RelativeLayout>
         <!--birthday container-->
         <!--password container-->
@@ -171,37 +152,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp" >
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp" >
             <TextView
-                android:id="@+id/password_label"
+                android:id="@+id/signup_password_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="@string/pass_label"/>
+                android:text="@string/pass_label"
+                android:textColor="@color/parapo_text_color"/>
 
             <EditText
-                android:id="@+id/password_text"
+                android:id="@+id/signup_password_text"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/password_label"
+                android:layout_height="48dp"
+                android:layout_below="@id/signup_password_label"
                 android:background="@android:color/transparent"
                 android:hint="@string/pass_label"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:textSize="@string/text_18"
                 android:inputType="textPassword"
-                android:autofillHints="123"/> <!--android:textColor="@color/editTextColor"-->
+                android:autofillHints="123"
+                android:textColor="@color/parapo_text_color"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/password_text"
+                android:layout_below="@id/signup_password_text"
                 android:layout_centerHorizontal="true"
-                android:background="@android:color/darker_gray"/>
+                android:background="@color/parapo_text_lightcolor"/>
         </RelativeLayout>
         <!--password container-->
         <!--confirm password container-->
@@ -209,27 +186,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp">
+            android:layout_marginStart="35dp"
+            android:layout_marginEnd="35dp">
             <TextView
-                android:id="@+id/confirmPass_label"
+                android:id="@+id/confirmpass_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
-                android:text="@string/confirmpass_label"/>
+                android:text="@string/confirmpass_label"
+                android:textColor="@color/parapo_text_color"/>
 
             <EditText
-                android:id="@+id/confirmPass_text"
+                android:id="@+id/confirmpass_text"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/confirmPass_label"
+                android:layout_height="48dp"
+                android:layout_below="@id/confirmpass_label"
                 android:background="@android:color/transparent"
                 android:hint="@string/confirmpass_label"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="5dp"
                 android:textSize="@string/text_18"
                 android:inputType="textPassword"
                 android:textColor="@color/parapo_text_color"/>
@@ -237,7 +209,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/confirmPass_text"
+                android:layout_below="@id/confirmpass_text"
                 android:layout_centerHorizontal="true"
                 android:background="@color/parapo_text_lightcolor"/>
         </RelativeLayout>
@@ -250,7 +222,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp" >
             <Button
-                android:id="@+id/signUpBtn"
+                android:id="@+id/signup_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/signup_label"/>
@@ -262,11 +234,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp" >
-            <Button
-                android:id="@+id/signupcancelBtn"
+            <TextView
+                android:id="@+id/signup_cancel_link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel_label"/>
+                android:textAlignment="center"
+                android:text="@string/have_acc_label"/>
         </RelativeLayout>
         <!--Cancel Button-->
         <!--ParaPo Form Container-->

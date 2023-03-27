@@ -17,9 +17,9 @@
     <string name="email_label">Email</string>
     <string name="pass_label">Password</string>
     <string name="confirmpass_label">Confirm Password</string>
-    <string name="cancel_label">Cancel</string>
+    <string name="have_acc_label">Already have an account?</string>
 
     <!--For Design-->
-    <string name="text_18">18sp</string>
+    <string name="text_18">14sp</string>
     <string name="text_16">16sp</string>
 </resources>
