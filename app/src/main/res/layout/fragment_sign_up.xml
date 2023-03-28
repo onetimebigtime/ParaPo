@@ -5,258 +5,264 @@
     android:id="@+id/swipeContainerSignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"> <!--xmlns:tools="http://schemas.android.com/tools"-->
-
-    <LinearLayout
+    android:background="@color/main_color"
+    tools:context=".login.sign_up.SignUpFragment">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!--Logo and SignUp text Container-->
-        <RelativeLayout
+        android:layout_height="match_parent"
+        android:background="@color/main_color">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--Logo and SignUp text Container-->
             <RelativeLayout
-                android:id="@+id/RL_logoView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <!--ParaPo Logo-->
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="25dp"
-                    android:id="@+id/imageView_logo1"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/ic_no_profile"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="5dp" />
-                <!--ParaPo Logo-->
+                <RelativeLayout
+                    android:id="@+id/RL_logoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <!--ParaPo Logo-->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="25dp"
+                        android:id="@+id/imageView_logo1"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/ic_no_profile"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="5dp" />
+                    <!--ParaPo Logo-->
+                </RelativeLayout>
+                <!--SignUp text-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/RL_logoView"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginStart="25dp"
+                    android:padding="10dp"
+                    android:text="@string/signup_label"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="@color/parapo_text_color"/>
+                <!--SignUp text-->
             </RelativeLayout>
-            <!--SignUp text-->
-            <TextView
-                android:layout_width="wrap_content"
+            <!--Logo and SignUp text Container-->
+            <!--ParaPo Form Container-->
+            <!--Full name container-->
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/RL_logoView"
-                android:layout_marginTop="1dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="35dp" >
+                <TextView
+                    android:id="@+id/signup_fullname_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fullname_label"
+                    android:textColor="@color/parapo_text_color"/>
+
+                <EditText
+                    android:id="@+id/signup_fullname_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/signup_fullname_label"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/fullname"
+                    android:textSize="18sp"
+                    android:textColor="@color/parapo_text_color"
+                    android:inputType="textPersonName"
+                    android:autofillHints="Anonymous Rider" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/signup_fullname_text"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/parapo_text_lightcolor"/>
+            </RelativeLayout>
+            <!--Full name container-->
+            <!--email container-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="35dp" >
+                <TextView
+                    android:id="@+id/signup_email_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email_label"
+                    android:textColor="@color/parapo_text_color"/>
+
+                <EditText
+                    android:id="@+id/signup_email_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/signup_email_label"
+                    android:hint="@string/email_address"
+                    android:background="@android:color/transparent"
+                    android:textSize="18sp"
+                    android:textColor="@color/parapo_text_color"
+                    android:inputType="textEmailAddress"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/signup_email_text"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/parapo_text_lightcolor"/>
+            </RelativeLayout>
+            <!--email container-->
+            <!--birthday container-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="35dp" >
+                <TextView
+                    android:id="@+id/signup_birthdate_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/birthdate_label"
+                    android:textColor="@color/parapo_text_color"/>
+
+                <EditText
+                    android:id="@+id/signup_birthdate_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/signup_birthdate_label"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/birthday"
+                    android:textSize="18sp"
+                    android:textColor="@color/parapo_text_color"
+                    android:inputType="date"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/signup_birthdate_text"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/parapo_text_lightcolor"/>
+            </RelativeLayout>
+            <!--birthday container-->
+            <!--password container-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="35dp" >
+                <TextView
+                    android:id="@+id/signup_password_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pass_label"
+                    android:textColor="@color/parapo_text_color"/>
+
+                <EditText
+                    android:id="@+id/signup_password_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/signup_password_label"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/pass_label"
+                    android:textSize="18sp"
+                    android:textColor="@color/parapo_text_color"
+                    android:inputType="textPassword"
+                    android:autofillHints="123456"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/signup_password_text"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/parapo_text_lightcolor"/>
+            </RelativeLayout>
+            <!--password container-->
+            <!--confirm password container-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="35dp">
+                <TextView
+                    android:id="@+id/confirmpass_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/confirmpass_label"
+                    android:textColor="@color/parapo_text_color"/>
+
+                <EditText
+                    android:id="@+id/confirmpass_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/confirmpass_label"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/confirmpass_label"
+                    android:textSize="18sp"
+                    android:textColor="@color/parapo_text_color"
+                    android:autofillHints="123456"
+                    android:inputType="textPassword"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/confirmpass_text"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/parapo_text_lightcolor"/>
+            </RelativeLayout>
+            <!--password container-->
+            <!--SignUp Button-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="25dp"
-                android:padding="10dp"
-                android:text="@string/signup_label"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:textColor="@color/parapo_text_color"/>
-            <!--SignUp text-->
-        </RelativeLayout>
-        <!--Logo and SignUp text Container-->
-        <!--ParaPo Form Container-->
-        <!--Full name container-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp" >
-            <TextView
-                android:id="@+id/signup_fullname_label"
+                android:layout_marginEnd="25dp" >
+                <Button
+                    android:id="@+id/signup_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_label"/>
+            </RelativeLayout>
+            <!--SignUp Button-->
+            <!--Cancel Button-->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/fullname_label"
-                android:textColor="@color/parapo_text_color"/>
-
-            <EditText
-                android:id="@+id/signup_fullname_text"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp" >
+                <TextView
+                    android:id="@+id/signup_cancel_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@string/have_acc_label"/>
+            </RelativeLayout>
+            <!--Cancel Button-->
+            <ProgressBar
+                android:id="@+id/signup_progressbar"
+                style="?android:attr/progressBarStyleLarge"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_below="@id/signup_fullname_label"
-                android:background="@android:color/transparent"
-                android:hint="@string/fullname"
-                android:textSize="@string/text_18"
-                android:inputType="textPersonName"
-                android:textColor="@color/parapo_text_color"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/signup_fullname_text"
-                android:layout_centerHorizontal="true"
-                android:background="@color/parapo_text_lightcolor"/>
-        </RelativeLayout>
-        <!--Full name container-->
-        <!--email container-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp" >
-            <TextView
-                android:id="@+id/signup_email_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/email_label"
-                android:textColor="@color/parapo_text_color"/>
-
-            <EditText
-                android:id="@+id/signup_email_text"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_below="@id/signup_email_label"
-                android:hint="@string/email_address"
-                android:background="@android:color/transparent"
-                android:textSize="@string/text_18"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/parapo_text_lightcolor"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/signup_email_text"
-                android:layout_centerHorizontal="true"
-                android:background="@color/parapo_text_lightcolor"/>
-        </RelativeLayout>
-        <!--email container-->
-        <!--birthday container-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp" >
-            <TextView
-                android:id="@+id/signup_birthdate_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/birthdate_label"
-                android:textColor="@color/parapo_text_color"/>
-
-            <EditText
-                android:id="@+id/signup_birthdate_text"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_below="@id/signup_birthdate_label"
-                android:background="@android:color/transparent"
-                android:hint="@string/birthday"
-                android:textSize="@string/text_18"
-                android:inputType="date"
-                android:textColor="@color/parapo_text_color"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/signup_birthdate_text"
-                android:layout_centerHorizontal="true"
-                android:background="@color/parapo_text_lightcolor"/>
-        </RelativeLayout>
-        <!--birthday container-->
-        <!--password container-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp" >
-            <TextView
-                android:id="@+id/signup_password_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pass_label"
-                android:textColor="@color/parapo_text_color"/>
-
-            <EditText
-                android:id="@+id/signup_password_text"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_below="@id/signup_password_label"
-                android:background="@android:color/transparent"
-                android:hint="@string/pass_label"
-                android:textSize="@string/text_18"
-                android:inputType="textPassword"
-                android:autofillHints="123"
-                android:textColor="@color/parapo_text_color"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/signup_password_text"
-                android:layout_centerHorizontal="true"
-                android:background="@color/parapo_text_lightcolor"/>
-        </RelativeLayout>
-        <!--password container-->
-        <!--confirm password container-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginEnd="35dp">
-            <TextView
-                android:id="@+id/confirmpass_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/confirmpass_label"
-                android:textColor="@color/parapo_text_color"/>
-
-            <EditText
-                android:id="@+id/confirmpass_text"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_below="@id/confirmpass_label"
-                android:background="@android:color/transparent"
-                android:hint="@string/confirmpass_label"
-                android:textSize="@string/text_18"
-                android:inputType="textPassword"
-                android:textColor="@color/parapo_text_color"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/confirmpass_text"
-                android:layout_centerHorizontal="true"
-                android:background="@color/parapo_text_lightcolor"/>
-        </RelativeLayout>
-        <!--password container-->
-        <!--SignUp Button-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp" >
-            <Button
-                android:id="@+id/signup_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/signup_label"/>
-        </RelativeLayout>
-        <!--SignUp Button-->
-        <!--Cancel Button-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp" >
-            <TextView
-                android:id="@+id/signup_cancel_link"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="@string/have_acc_label"/>
-        </RelativeLayout>
-        <!--Cancel Button-->
-        <ProgressBar
-            android:id="@+id/signup_progressbar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="-310dp"
-            android:visibility="gone"
-            tools:ignore="MissingConstraints"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
-        <!--ParaPo Form Container-->
-    </LinearLayout>
-
+                android:layout_height="70dp"
+                android:layout_marginTop="-310dp"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+            <!--ParaPo Form Container-->
+        </LinearLayout>
+    </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
