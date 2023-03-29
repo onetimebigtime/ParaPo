@@ -26,10 +26,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class SignUpFragment extends AppCompatActivity{
@@ -45,7 +48,7 @@ public class SignUpFragment extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_sign_up);
         
-        getSupportActionBar().setTitle("Sign Up");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Sign Up");
 
         Toast.makeText(SignUpFragment.this, "Sign Up now to become a Traveler", Toast.LENGTH_SHORT).show();
 
@@ -110,14 +113,14 @@ public class SignUpFragment extends AppCompatActivity{
                     signUpConfirmPassText.clearComposingText();
                 } else {
                     signUpProgressBar.setVisibility(View.VISIBLE);
-                    signUpTraveler(fullName, email, birthdate, password, confirmPass);
-                    
+                    signUpTraveler(fullName, email, birthdate, password);
+
                 }
             }
         });
     }
     //Register traveler method
-    private void signUpTraveler(String fullName, String email, String birthdate, String password, String confirmPass) {
+    private void signUpTraveler(String fullName, String email, String birthdate, String password) {
         //Firebase initiation
         FirebaseAuth signUpAuth = FirebaseAuth.getInstance(); // Firebase object
         signUpAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpFragment.this, new OnCompleteListener<AuthResult>() {
@@ -125,27 +128,51 @@ public class SignUpFragment extends AppCompatActivity{
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(SignUpFragment.this, "Congrats! You are now a Traveler!", Toast.LENGTH_SHORT).show();
-                    FirebaseUser firebaseUser = signUpAuth.getCurrentUser();
+                    FirebaseUser firebaseTraveler = signUpAuth.getCurrentUser(); //firebase user object
 
-                    // Send Verification
-                    assert firebaseUser != null;
-                    firebaseUser.sendEmailVerification();
+                    //Save user Fullname and update
+                    UserProfileChangeRequest travelerFullName = new UserProfileChangeRequest.Builder().setDisplayName(fullName).build();
+                    assert firebaseTraveler != null;
+                    firebaseTraveler.updateProfile(travelerFullName);
 
-                    //Set progressbar visibility
-                    signUpProgressBar.setVisibility(View.GONE);
+                    //Save user data in firebase database
+                    TravelersData getTravelersData = new TravelersData(email,birthdate);
 
-                    //Open Main activity after Profile  successful registration
-                    /*Intent intent =new Intent(SignUpFragment.this, MainActivity.class );
+                    //Get user reference in the database
+                    DatabaseReference travelerReference = FirebaseDatabase.getInstance().getReference("Travelers");
+                    travelerReference.child(firebaseTraveler.getUid()).setValue(getTravelersData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                // Send Verification
+                                firebaseTraveler.sendEmailVerification();
+                                Toast.makeText(SignUpFragment.this, "Traveler, please verify your email", Toast.LENGTH_SHORT).show();
 
-                    //Prevent user from returning back to register
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish(); //close this signup activity*/
+                                //Open Main activity after Profile  successful registration
+                                Intent intent =new Intent(SignUpFragment.this, MainActivity.class );
+
+                                //Prevent user from returning back to register
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish(); //close this signup activity
+                            } else {
+                                //Make progressbar disappear
+                                try {
+                                    throw Objects.requireNonNull(task.getException());
+                                } catch (Exception e) {
+                                    Log.e(TAG, e.getMessage());
+                                    Toast.makeText(SignUpFragment.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            //Set progressbar visibility
+                            signUpProgressBar.setVisibility(View.GONE);
+                        }
+                    });
+
                 } else {
-                    signUpProgressBar.setVisibility(View.GONE);
                     try {
-                        throw task.getException();
+                        throw Objects.requireNonNull(task.getException());
                     } catch (FirebaseAuthUserCollisionException e) {
                         signUpEmailText.setError("A Traveler exists with this email!");
                         signUpEmailText.requestFocus();
@@ -153,6 +180,8 @@ public class SignUpFragment extends AppCompatActivity{
                         Log.e(TAG, e.getMessage());
                         Toast.makeText(SignUpFragment.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+                    //Make progressbar disappear
+                    signUpProgressBar.setVisibility(View.GONE);
                 }
             }
         });
