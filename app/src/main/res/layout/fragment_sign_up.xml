@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeContainerSignUp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
     android:background="@color/main_color"
+    android:elevation="10dp"
     tools:context=".login.sign_up.SignUpFragment">
+
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/main_color">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,250 +23,236 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <!--Logo and SignUp text Container-->
+            <!--PARAPO LOGO-->
             <RelativeLayout
+                android:id="@+id/signup_RL_logoView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <RelativeLayout
-                    android:id="@+id/RL_logoView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <!--ParaPo Logo-->
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="25dp"
-                        android:id="@+id/imageView_logo1"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:src="@drawable/ic_no_profile"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="5dp" />
-                    <!--ParaPo Logo-->
-                </RelativeLayout>
-                <!--SignUp text-->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/RL_logoView"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginStart="25dp"
-                    android:padding="10dp"
-                    android:text="@string/signup_label"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:textColor="@color/parapo_text_color"/>
-                <!--SignUp text-->
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView_logo1"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/ic_no_profile"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="5dp" />
             </RelativeLayout>
-            <!--Logo and SignUp text Container-->
-            <!--ParaPo Form Container-->
-            <!--Full name container-->
+            <!--PARAPO LOGO-->
+
+            <!--SIGN UP LABEL-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="1dp"
+                android:padding="10dp"
+                android:text="@string/signup_label"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textColor="@color/parapo_text_color" />
+            <!--SIGN UP LABEL-->
+
+            <!--LOGIN FORM SECTION-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
-                android:layout_marginEnd="35dp" >
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="35dp">
+
+                <!--FULL NAME SECTION-->
                 <TextView
                     android:id="@+id/signup_fullname_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/fullname_label"
-                    android:textColor="@color/parapo_text_color"/>
+                    android:textColor="@color/parapo_text_color" />
 
                 <EditText
                     android:id="@+id/signup_fullname_text"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_below="@id/signup_fullname_label"
+                    android:autofillHints="Anonymous Rider"
                     android:background="@android:color/transparent"
                     android:hint="@string/fullname"
-                    android:textSize="18sp"
-                    android:textColor="@color/parapo_text_color"
                     android:inputType="textPersonName"
-                    android:autofillHints="Anonymous Rider" />
+                    android:textColor="@color/parapo_text_color"
+                    android:textSize="18sp" />
 
                 <View
+                    android:id="@+id/signup_fullname_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/signup_fullname_text"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/parapo_text_lightcolor"/>
-            </RelativeLayout>
-            <!--Full name container-->
-            <!--email container-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginEnd="35dp" >
+                    android:background="@color/parapo_text_lightcolor" />
+                <!--FULL NAME SECTION-->
+
+                <!--EMAIL SECTION-->
                 <TextView
                     android:id="@+id/signup_email_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/signup_fullname_view"
+                    android:layout_marginTop="20dp"
                     android:text="@string/email_label"
-                    android:textColor="@color/parapo_text_color"/>
+                    android:textColor="@color/parapo_text_color" />
 
                 <EditText
                     android:id="@+id/signup_email_text"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_below="@id/signup_email_label"
-                    android:hint="@string/email_address"
                     android:background="@android:color/transparent"
-                    android:textSize="18sp"
+                    android:hint="@string/email_address"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/parapo_text_color"
-                    android:inputType="textEmailAddress"/>
+                    android:textSize="18sp" />
 
                 <View
+                    android:id="@+id/signup_email_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/signup_email_text"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/parapo_text_lightcolor"/>
-            </RelativeLayout>
-            <!--email container-->
-            <!--birthday container-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginEnd="35dp" >
+                    android:background="@color/parapo_text_lightcolor" />
+                <!--EMAIL SECTION-->
+
+                <!--BIRTHDATE SECTION-->
                 <TextView
                     android:id="@+id/signup_birthdate_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/signup_email_view"
+                    android:layout_marginTop="20dp"
                     android:text="@string/birthdate_label"
-                    android:textColor="@color/parapo_text_color"/>
+                    android:textColor="@color/parapo_text_color" />
 
                 <EditText
                     android:id="@+id/signup_birthdate_text"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_below="@id/signup_birthdate_label"
+                    android:autofillHints="123456"
                     android:background="@android:color/transparent"
                     android:hint="@string/birthday"
-                    android:textSize="18sp"
+                    android:inputType="date"
                     android:textColor="@color/parapo_text_color"
-                    android:inputType="date"/>
+                    android:textSize="18sp" />
 
                 <View
+                    android:id="@+id/signup_birthdate_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/signup_birthdate_text"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/parapo_text_lightcolor"/>
-            </RelativeLayout>
-            <!--birthday container-->
-            <!--password container-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginEnd="35dp" >
+                    android:background="@color/parapo_text_lightcolor" />
+                <!--BIRTHDATE SECTION-->
+
+                <!--PASSWORD SECTION-->
                 <TextView
                     android:id="@+id/signup_password_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/signup_birthdate_view"
+                    android:layout_marginTop="20dp"
                     android:text="@string/pass_label"
-                    android:textColor="@color/parapo_text_color"/>
+                    android:textColor="@color/parapo_text_color" />
 
                 <EditText
                     android:id="@+id/signup_password_text"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_below="@id/signup_password_label"
+                    android:autofillHints="123456"
                     android:background="@android:color/transparent"
                     android:hint="@string/pass_label"
-                    android:textSize="18sp"
-                    android:textColor="@color/parapo_text_color"
                     android:inputType="textPassword"
-                    android:autofillHints="123456"/>
+                    android:textColor="@color/parapo_text_color"
+                    android:textSize="18sp" />
 
                 <View
+                    android:id="@+id/signup_password_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/signup_password_text"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/parapo_text_lightcolor"/>
-            </RelativeLayout>
-            <!--password container-->
-            <!--confirm password container-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="35dp"
-                android:layout_marginEnd="35dp">
+                    android:background="@color/parapo_text_lightcolor" />
+                <!--PASSWORD SECTION-->
+
+                <!--CONFIRM PASSWORD SECTION-->
                 <TextView
                     android:id="@+id/confirmpass_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/signup_password_view"
+                    android:layout_marginTop="20dp"
                     android:text="@string/confirmpass_label"
-                    android:textColor="@color/parapo_text_color"/>
+                    android:textColor="@color/parapo_text_color" />
 
                 <EditText
                     android:id="@+id/confirmpass_text"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_below="@id/confirmpass_label"
+                    android:autofillHints="123456"
                     android:background="@android:color/transparent"
                     android:hint="@string/confirmpass_label"
-                    android:textSize="18sp"
+                    android:inputType="textPassword"
                     android:textColor="@color/parapo_text_color"
-                    android:autofillHints="123456"
-                    android:inputType="textPassword"/>
+                    android:textSize="18sp" />
 
                 <View
+                    android:id="@+id/confirmpass_view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@id/confirmpass_text"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/parapo_text_lightcolor"/>
-            </RelativeLayout>
-            <!--password container-->
-            <!--SignUp Button-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp" >
+                    android:background="@color/parapo_text_lightcolor" />
+                <!--CONFIRM PASSWORD SECTION-->
+
+                <!--SIGN IN BUTTON SECTION-->
                 <Button
                     android:id="@+id/signup_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/signup_label"/>
-            </RelativeLayout>
-            <!--SignUp Button-->
-            <!--Cancel Button-->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp" >
+                    android:layout_below="@id/confirmpass_view"
+                    android:layout_marginTop="20dp"
+                    android:elevation="10dp"
+                    android:text="@string/signup_label"
+                    app:cornerRadius="20dp" />
+                <!--SIGN IN BUTTON SECTION-->
+
+                <!--CANCERL SECTION-->
                 <TextView
                     android:id="@+id/signup_cancel_link"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="@string/have_acc_label"/>
+                    android:layout_below="@id/signup_button"
+                    android:text="@string/have_acc_label"
+                    android:textAlignment="center" />
+                <!--CANCEL SECTION-->
+
+                <!--PROGRESS BAR SECTION-->
+                <ProgressBar
+                    android:id="@+id/signup_progressbar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="MissingConstraints" />
+                <!--PROGRESS BAR SECTION-->
             </RelativeLayout>
-            <!--Cancel Button-->
-            <ProgressBar
-                android:id="@+id/signup_progressbar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginTop="-310dp"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
-            <!--ParaPo Form Container-->
+            <!--LOGIN FORM SECTION-->
         </LinearLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
