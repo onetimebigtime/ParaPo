@@ -35,8 +35,9 @@
                     android:layout_height="120dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="25dp"
-                    android:src="@drawable/ic_no_profile"
-                    app:civ_border_color="@color/white"
+                    android:elevation="10dp"
+                    android:src="@mipmap/ic_channel_parapo"
+                    app:civ_border_color="@color/sec_color"
                     app:civ_border_width="5dp" />
             </RelativeLayout>
             <!--PARAPO LOGO-->
@@ -108,7 +109,6 @@
                     android:layout_below="@id/signup_email_label"
                     android:background="@android:color/transparent"
                     android:hint="@string/email_address"
-                    android:importantForAutofill="no"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/parapo_text_color"
                     android:textSize="18sp" />
