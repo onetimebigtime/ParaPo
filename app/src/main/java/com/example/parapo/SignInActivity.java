@@ -22,7 +22,6 @@ import java.util.Objects;
 public class SignInActivity extends AppCompatActivity {
     private EditText signInEmailText, signInPasswordText;
     private ProgressBar signInProgressBar;
-    private Button signInButton;
     private FirebaseAuth signInAuth;
 
     @Override
@@ -40,7 +39,8 @@ public class SignInActivity extends AppCompatActivity {
         signInProgressBar = findViewById(R.id.signin_progressbar); //find progress bar
 
         //Setup sign in button
-        signInButton = findViewById(R.id.signin_button);
+        Button signInButton = findViewById(R.id.signin_button);
+        //Sign in button function
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +66,15 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        //Setup to sign up button
+        Button toSignUpButton = findViewById(R.id.to_signup_button);
+        //to sign up Button functionality
+        toSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
     private void signInUser(String email, String password) {
         signInAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
