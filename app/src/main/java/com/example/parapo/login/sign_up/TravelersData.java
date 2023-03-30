@@ -1,14 +1,15 @@
 package com.example.parapo.login.sign_up;
 
 public class TravelersData {
-    public String email, birthdate;
+    public String full_name, gender, birthdate;
 
     public TravelersData(){
 
     }
 
-    public TravelersData(String email, String birthdate){
-        this.email = email;
+    public TravelersData(String full_name, String gender, String birthdate){
+        this.full_name = full_name;
+        this.gender = gender;
         this.birthdate = birthdate;
     }
 }

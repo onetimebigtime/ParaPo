@@ -9,6 +9,8 @@
     <string name="traveler_logo">Traveler Logo</string>
     <string name="birthday_logo">Birthday Logo</string>
     <string name="email_logo">Email Logo</string>
+    <string name="gender_logo">Gender Logo</string>
+    <string name="gender">Gender</string>
     <string name="logout">LogOut</string>
     <string name="forgot_pass">Forgot password?</string>
 
@@ -22,6 +24,8 @@
     <string name="have_acc_label">Already have an account?</string>
 
     <!--For Design-->
+    <string name="female">Female</string>
+    <string name="male">Male</string>
     <string name="text_18">14sp</string>
     <string name="text_16">16sp</string>
 </resources>

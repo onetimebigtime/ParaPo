@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,9 @@ public class SignUpFragment extends AppCompatActivity{
 
     //Initializing Components
     private TextView signUpCancelLink;
+
+    private RadioGroup signUpGenderRadio;
+    private RadioButton signUpGenderReveal;
     private EditText signUpFullNameText, signUpEmailText, signUpBirthdateText, signUpPasswordText, signUpConfirmPassText;
     private ProgressBar signUpProgressBar;
     private static final String TAG = "SignUpFragment";
@@ -56,30 +61,40 @@ public class SignUpFragment extends AppCompatActivity{
         /*signUpCancelLink = findViewById(R.id.signup_cancel_link);
         signUpCancelLink.setOnClickListener(this); // Set the value of v in OnClick Function*/
 
-        //Setting up textboxes
-        signUpFullNameText = findViewById(R.id.signup_fullname_text); //fullname textbox
-        signUpEmailText = findViewById(R.id.signup_email_text);// email textbox
-        signUpBirthdateText = findViewById(R.id.signup_birthdate_text); // birth textbox
-        signUpPasswordText = findViewById(R.id.signup_password_text); //password textbox
+        //SETTING UP THE TEXT BOXES
+        signUpFullNameText = findViewById(R.id.signup_fullname_text); //FULLNAME TEXTBOX
+        signUpEmailText = findViewById(R.id.signup_email_text); //EMAIL TEXTBOX
+        signUpBirthdateText = findViewById(R.id.signup_birthdate_text); //BIRTH TEXTBOX
+        signUpPasswordText = findViewById(R.id.signup_password_text); //PASSWORD TEXTBOX
         signUpConfirmPassText = findViewById(R.id.confirmpass_text);
 
-        // Setting up for progressbar
+        //SETTING UP RADIO GENDER GROUP BUTTON
+        signUpGenderRadio = findViewById(R.id.signup_gender_radio);
+        signUpGenderRadio.clearCheck();
+
+        //SETTING UP PROGRESS BAR
         signUpProgressBar = findViewById(R.id.signup_progressbar);
 
-        //Setting up Button
-        Button signUpButton = findViewById(R.id.signup_button); //Sign Up Button
-        // Sign Button OnClick Function
+        //SETTING UP SIGN UP BUTTON
+        Button signUpButton = findViewById(R.id.signup_button);
+
+        //SIGN UP BUTTON FUNCTION
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fullName = signUpFullNameText.getText().toString().trim();
+                //GENDER REVEAL
+                int genderReveal = signUpGenderRadio.getCheckedRadioButtonId();
+                signUpGenderReveal = findViewById(genderReveal);
+
+                String gender; //OBTAIN VALUE LATER
+                String full_name = signUpFullNameText.getText().toString().trim();
                 String email = signUpEmailText.getText().toString().trim();
                 String birthdate = signUpBirthdateText.getText().toString().trim();
                 String password = signUpPasswordText.getText().toString().trim();
                 String confirmPass = signUpConfirmPassText.getText().toString().trim();
 
-                //Check if textbox is empty
-                if(TextUtils.isEmpty(fullName)) {
+                //CHECK TEXT BOX IF EMPTY
+                if(TextUtils.isEmpty(full_name)) {
                     Toast.makeText(SignUpFragment.this, "Please provide a full name", Toast.LENGTH_SHORT).show();
                     signUpFullNameText.setError("Enter a full name!");
                     signUpFullNameText.requestFocus();
@@ -94,6 +109,10 @@ public class SignUpFragment extends AppCompatActivity{
                     signUpBirthdateText.setError("Enter a birthdate!");
                     signUpBirthdateText.requestFocus();
                 }
+                else if (signUpGenderRadio.getCheckedRadioButtonId()==-1) {
+                    signUpGenderReveal.setError("Enter a gender!");
+                    signUpGenderReveal.requestFocus();
+                }
                 else if(TextUtils.isEmpty(password) || password.length() < 6) {
                     Toast.makeText(SignUpFragment.this, "Please provide a password", Toast.LENGTH_SHORT).show();
                     signUpPasswordText.setError("Enter a more than 6 character password!");
@@ -104,7 +123,7 @@ public class SignUpFragment extends AppCompatActivity{
                     signUpConfirmPassText.setError("Enter  a password to confirm!");
                     signUpConfirmPassText.requestFocus();
                 }
-                //Check confirmed password
+                //CHECK IF PASSWORD IS THE SAME AS CONFIRM PASSWORD
                 else if(!password.equals(confirmPass)) {
                     Toast.makeText(SignUpFragment.this, "Please confirm pasword", Toast.LENGTH_SHORT).show();
                     signUpConfirmPassText.setError("Enter password for verification!");
@@ -112,15 +131,16 @@ public class SignUpFragment extends AppCompatActivity{
                     //Erasing password input
                     signUpConfirmPassText.clearComposingText();
                 } else {
+                    gender = signUpGenderReveal.getText().toString();
                     signUpProgressBar.setVisibility(View.VISIBLE);
-                    signUpTraveler(fullName, email, birthdate, password);
+                    signUpTraveler(full_name, email, birthdate, gender, password);
 
                 }
             }
         });
     }
     //Register traveler method
-    private void signUpTraveler(String fullName, String email, String birthdate, String password) {
+    private void signUpTraveler(String full_name, String email, String birthdate, String gender, String password) {
         //Firebase initiation
         FirebaseAuth signUpAuth = FirebaseAuth.getInstance(); // Firebase object
         signUpAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(SignUpFragment.this, new OnCompleteListener<AuthResult>() {
@@ -130,13 +150,8 @@ public class SignUpFragment extends AppCompatActivity{
                     Toast.makeText(SignUpFragment.this, "Congrats! You are now a Traveler!", Toast.LENGTH_SHORT).show();
                     FirebaseUser firebaseTraveler = signUpAuth.getCurrentUser(); //firebase user object
 
-                    //Save user Fullname and update
-                    UserProfileChangeRequest travelerFullName = new UserProfileChangeRequest.Builder().setDisplayName(fullName).build();
-                    assert firebaseTraveler != null;
-                    firebaseTraveler.updateProfile(travelerFullName);
-
-                    //Save user data in firebase database
-                    TravelersData getTravelersData = new TravelersData(email,birthdate);
+                    //Save user data in realtime database
+                    TravelersData getTravelersData = new TravelersData(full_name, gender, birthdate);
 
                     //Get user reference in the database
                     DatabaseReference travelerReference = FirebaseDatabase.getInstance().getReference("Travelers");

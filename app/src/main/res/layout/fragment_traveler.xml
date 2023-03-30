@@ -15,40 +15,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--Profile Picture Container-->
+        <!--HEAD CONTAINER-->
         <RelativeLayout
             android:id="@+id/layout_head"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:background="@color/sec_color">
 
-            <RelativeLayout
+            <!--PROFILE PICTURE CONTAINER-->
+            <androidx.cardview.widget.CardView
                 android:id="@+id/RL_imageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:elevation="5dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="100dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView_user_profile"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/ic_no_profile"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="5dp" />
+            </androidx.cardview.widget.CardView>
+            <!--PROFILE PICTURE CONTAINER-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="40dp"
-                    android:elevation="5dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="100dp">
-                    <!--Profile Picture-->
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imageView_user_profile"
-                        android:layout_width="150dp"
-                        android:layout_height="150dp"
-                        android:src="@drawable/ic_no_profile"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="5dp" />
-                </androidx.cardview.widget.CardView>
-                <!--Profile Picture-->
-            </RelativeLayout>
-            <!--FullName-->
+            <!--FULL NAME HEADING CONTAINER-->
             <TextView
-                android:id="@+id/textView_fullname1"
+                android:id="@+id/travelers_fullname_head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/RL_imageView"
@@ -60,8 +56,9 @@
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
         </RelativeLayout>
+        <!--HEAD CONTAINER-->
 
-        <!--Name Details-->
+        <!--FULL NAME CONTAINER-->
         <RelativeLayout
             android:id="@+id/RL_name"
             android:layout_width="match_parent"
@@ -83,7 +80,7 @@
                 android:contentDescription="@string/traveler_logo" />
 
             <TextView
-                android:id="@+id/textView_fullName2"
+                android:id="@+id/travelers_fullname_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/ic_profile"
@@ -92,8 +89,9 @@
                 android:padding="5dp"
                 android:textSize="18sp" />
         </RelativeLayout>
-        <!--Name Details-->
-        <!--Email Details-->
+        <!--FULL NAME CONTAINER-->
+
+        <!--EMAIL CONTAINER-->
         <RelativeLayout
             android:id="@+id/RL_email_address"
             android:layout_width="match_parent"
@@ -115,7 +113,7 @@
                 android:contentDescription="@string/email_logo" />
 
             <TextView
-                android:id="@+id/textView_email_address"
+                android:id="@+id/travelers_email_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/ic_email_address"
@@ -124,10 +122,11 @@
                 android:padding="5dp"
                 android:textSize="18sp" />
         </RelativeLayout>
-        <!--Email Details-->
-        <!--Birthday Details-->
+        <!--EMAIL CONTAINER-->
+
+        <!--BIRTHDAY CONTAINER-->
         <RelativeLayout
-            android:id="@+id/RL_brithday"
+            android:id="@+id/RL_birthday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -147,7 +146,7 @@
                 android:contentDescription="@string/birthday_logo" />
 
             <TextView
-                android:id="@+id/textView_birthday"
+                android:id="@+id/travelers_birthday_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/ic_birthday"
@@ -156,23 +155,60 @@
                 android:padding="5dp"
                 android:textSize="18sp" />
         </RelativeLayout>
-        <!--Birthday Details-->
-        <!--Button for Log out-->
+        <!--BIRTHDAY CONTAINER-->
+
+        <!--GENDER CONTAINER-->
         <RelativeLayout
-            android:id="@+id/RL_logout_btn"
+            android:id="@+id/RL_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:id="@+id/ic_gender"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_gender"
+                android:contentDescription="@string/gender_logo" />
+
+            <TextView
+                android:id="@+id/travelers_gender_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/ic_gender"
+                android:layout_marginStart="50dp"
+                android:hint="@string/gender"
+                android:padding="5dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <!--GENDER CONTAINER-->
+
+        <!--LOGOUT BUTTON CONTAINER-->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            tools:ignore="RtlSymmetry">
 
             <Button
-                android:id="@+id/logoutBtn"
+                android:id="@+id/logout_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cornerRadius = "20dp"
                 android:text="@string/logout" />
         </RelativeLayout>
-        <!--Button for Log out-->
-    </LinearLayout>
+        <!--LOGOUT BUTTON CONTAINER-->
 
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
