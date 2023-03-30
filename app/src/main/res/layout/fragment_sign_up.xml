@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="35dp"
+                    android:layout_marginTop="25dp"
                     android:elevation="10dp"
                     android:src="@mipmap/ic_channel_parapo"
                     app:civ_border_color="@color/sec_color"
@@ -61,8 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="35dp"
-                android:layout_marginBottom="35dp">
+                android:layout_marginEnd="35dp">
 
                 <!--FULL NAME SECTION-->
                 <TextView
@@ -117,7 +116,7 @@
                 <View
                     android:id="@+id/signup_email_view"
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
+                    android:layout_height="1dp"
                     android:layout_below="@id/signup_email_text"
                     android:layout_centerHorizontal="true"
                     android:background="@color/parapo_text_lightcolor" />
@@ -161,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/signup_birthdate_view"
                     android:layout_marginTop="20dp"
-                    android:text="@string/gender"
+                    android:text="@string/pass_label"
                     android:textColor="@color/parapo_text_color" />
 
                 <RadioGroup
@@ -184,7 +183,7 @@
                         android:id="@+id/signup_male_radio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
                         android:buttonTint="@color/sec_color"
                         android:text="@string/male"
                         android:textColor="@color/parapo_text_color"

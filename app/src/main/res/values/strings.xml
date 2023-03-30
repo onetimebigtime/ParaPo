@@ -13,6 +13,8 @@
     <string name="gender">Gender</string>
     <string name="logout">LogOut</string>
     <string name="forgot_pass">Forgot password?</string>
+    <string name="hide_pass">hide</string>
+    <string name="show_pass">show</string>
 
     <string name="signin_label">SIGN IN</string>
     <string name="signup_label">SIGN UP</string>

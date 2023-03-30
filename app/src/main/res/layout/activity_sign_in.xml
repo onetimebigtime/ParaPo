@@ -118,22 +118,27 @@
                     android:layout_below="@id/signin_password_text"
                     android:layout_centerHorizontal="true"
                     android:background="@color/parapo_text_lightcolor"/>
+
+                <TextView
+                    android:id="@+id/signin_showpass_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/signin_pass_view"/>
                 <!--PASSWORD SECTION-->
 
                 <!--SIGN IN BUTTON SECTION-->
-                <!--SIGN IN BUTTON SECTION-->
-
-                <!--FORGET PASSWORD SECTION-->
                 <Button
                     android:id="@+id/signin_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/signin_pass_view"
+                    android:layout_below="@id/signin_showpass_label"
                     android:layout_marginTop="20dp"
                     android:elevation="10dp"
                     android:text="@string/signin_label"
                     app:cornerRadius="20dp" />
+                <!--SIGN IN BUTTON SECTION-->
 
+                <!--FORGET PASSWORD SECTION-->
                 <TextView
                     android:id="@+id/signin_forgot_link"
                     android:layout_below="@id/signin_button"
