@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/signup_birthdate_view"
                     android:layout_marginTop="20dp"
-                    android:text="@string/pass_label"
+                    android:text="@string/gender"
                     android:textColor="@color/parapo_text_color" />
 
                 <RadioGroup

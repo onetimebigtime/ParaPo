@@ -24,7 +24,7 @@ public class TripsFragment extends Fragment {
         binding = FragmentTripsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textTrips;
+        final TextView textView = binding.textTrip;
         tripsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
