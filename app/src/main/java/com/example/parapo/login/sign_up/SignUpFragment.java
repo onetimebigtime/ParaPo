@@ -79,85 +79,73 @@ public class SignUpFragment extends AppCompatActivity{
         Button signUpButton = findViewById(R.id.signup_button);
 
         //-------------------------------SETTING UP A DATE PICKER ON CLICK FUNCTION SECTION---------------------------------
-        signUpBirthdateText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-                birthdatePicker = new DatePickerDialog(SignUpFragment.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        signUpBirthdateText.setText((month+1) + "/" + dayOfMonth + "/" + year);
-                    }
-                },day, month, year);
-                birthdatePicker.show();
-            }
+        signUpBirthdateText.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
+            birthdatePicker = new DatePickerDialog(SignUpFragment.this, (view, year1, month1, dayOfMonth) -> signUpBirthdateText.setText((month1 +1) + "/" + dayOfMonth + "/" + year1), month,day,year);
+            birthdatePicker.show();
         });
         //-------------------------------SETTING UP A DATE PICKER ON CLICK FUNCTION SECTION---------------------------------
 
         //1----------------------------------SIGN UP BUTTON ON CLICK FUNCTION SECTION---------------------------------------------------
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //GENDER REVEAL
-                int genderReveal = signUpGenderRadio.getCheckedRadioButtonId();
-                signUpGenderReveal = findViewById(genderReveal);
+        signUpButton.setOnClickListener(v -> {
+            //GENDER REVEAL
+            int genderReveal = signUpGenderRadio.getCheckedRadioButtonId();
+            signUpGenderReveal = findViewById(genderReveal);
 
-                String gender; //OBTAIN VALUE LATER
-                String full_name = signUpFullNameText.getText().toString().trim();
-                String email = signUpEmailText.getText().toString().trim();
-                String birthdate = signUpBirthdateText.getText().toString().trim();
-                String password = signUpPasswordText.getText().toString().trim();
-                String confirmPass = signUpConfirmPassText.getText().toString().trim();
+            String full_name = signUpFullNameText.getText().toString().trim();
+            String email = signUpEmailText.getText().toString().trim();
+            String birthdate = signUpBirthdateText.getText().toString().trim();
+            String password = signUpPasswordText.getText().toString().trim();
+            String confirmPass = signUpConfirmPassText.getText().toString().trim();
 
-                //CHECK TEXT BOX IF EMPTY
-                if(TextUtils.isEmpty(full_name)) {
-                    Toast.makeText(SignUpFragment.this, "Please provide a full name", Toast.LENGTH_SHORT).show();
-                    signUpFullNameText.setError("Enter a full name!");
-                    signUpFullNameText.requestFocus();
-                }
-                else if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Toast.makeText(SignUpFragment.this, "Please provide an email address", Toast.LENGTH_SHORT).show();
-                    signUpEmailText.setError("Enter a valid email address!");
-                    signUpEmailText.requestFocus();
-                }
-                else if(TextUtils.isEmpty(birthdate)) {
-                    Toast.makeText(SignUpFragment.this, "Please provide a birthdate", Toast.LENGTH_SHORT).show();
-                    signUpBirthdateText.setError("Enter a birthdate!");
-                    signUpBirthdateText.requestFocus();
-                }
-                else if (signUpGenderRadio.getCheckedRadioButtonId()==-1) {
-                    signUpGenderReveal.setError("Enter a gender!");
-                    signUpGenderReveal.requestFocus();
-                }
-                else if(TextUtils.isEmpty(password) || password.length() < 6) {
-                    Toast.makeText(SignUpFragment.this, "Please provide a password", Toast.LENGTH_SHORT).show();
-                    signUpPasswordText.setError("Enter a more than 6 character password!");
-                    signUpPasswordText.requestFocus();
-                }
-                else if(TextUtils.isEmpty(confirmPass)) {
-                    Toast.makeText(SignUpFragment.this, "Please provide a password", Toast.LENGTH_SHORT).show();
-                    signUpConfirmPassText.setError("Enter  a password to confirm!");
-                    signUpConfirmPassText.requestFocus();
-                }
-                //CHECK IF PASSWORD IS THE SAME AS CONFIRM PASSWORD
-                else if(!password.equals(confirmPass)) {
-                    Toast.makeText(SignUpFragment.this, "Please confirm pasword", Toast.LENGTH_SHORT).show();
-                    signUpConfirmPassText.setError("Enter password for verification!");
-                    signUpConfirmPassText.requestFocus();
-                    //ERASING TEXT IN THE CONFIRM TEXT BOX
-                    signUpConfirmPassText.clearComposingText();
-                }
-                //NO ERROR PROCEED
-                else {
-                    gender = signUpGenderReveal.getText().toString();
-                    signUpProgressBar.setVisibility(View.VISIBLE);
-                    //1--SIGNING UP TRAVELERS
-                    signUpTraveler(full_name, email, birthdate, gender, password);
+            //CHECK TEXT BOX IF EMPTY
+            if(TextUtils.isEmpty(full_name)) {
+                Toast.makeText(SignUpFragment.this, "Please provide a full name", Toast.LENGTH_SHORT).show();
+                signUpFullNameText.setError("Enter a full name!");
+                signUpFullNameText.requestFocus();
+            }
+            else if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(SignUpFragment.this, "Please provide an email address", Toast.LENGTH_SHORT).show();
+                signUpEmailText.setError("Enter a valid email address!");
+                signUpEmailText.requestFocus();
+            }
+            else if(TextUtils.isEmpty(birthdate)) {
+                Toast.makeText(SignUpFragment.this, "Please provide a birthdate", Toast.LENGTH_SHORT).show();
+                signUpBirthdateText.setError("Enter a birthdate!");
+                signUpBirthdateText.requestFocus();
+            }
+            else if (signUpGenderRadio.getCheckedRadioButtonId()==-1) {
+                signUpGenderReveal.setError("Enter a gender!");
+                signUpGenderReveal.requestFocus();
+            }
+            else if(TextUtils.isEmpty(password) || password.length() < 6) {
+                Toast.makeText(SignUpFragment.this, "Please provide a password", Toast.LENGTH_SHORT).show();
+                signUpPasswordText.setError("Enter a more than 6 character password!");
+                signUpPasswordText.requestFocus();
+            }
+            else if(TextUtils.isEmpty(confirmPass)) {
+                Toast.makeText(SignUpFragment.this, "Please provide a password", Toast.LENGTH_SHORT).show();
+                signUpConfirmPassText.setError("Enter  a password to confirm!");
+                signUpConfirmPassText.requestFocus();
+            }
+            //CHECK IF PASSWORD IS THE SAME AS CONFIRM PASSWORD
+            else if(!password.equals(confirmPass)) {
+                Toast.makeText(SignUpFragment.this, "Please confirm pasword", Toast.LENGTH_SHORT).show();
+                signUpConfirmPassText.setError("Enter password for verification!");
+                signUpConfirmPassText.requestFocus();
+                //ERASING TEXT IN THE CONFIRM TEXT BOX
+                signUpConfirmPassText.clearComposingText();
+            }
+            //NO ERROR PROCEED
+            else {
+                String gender = signUpGenderReveal.getText().toString();
+                signUpProgressBar.setVisibility(View.VISIBLE);
+                //1--SIGNING UP TRAVELERS
+                signUpTraveler(full_name, email, birthdate, gender, password);
 
-                }
             }
         });
         //1----------------------------------SIGN UP BUTTON ON CLICK FUNCTION SECTION---------------------------------------------------
@@ -176,11 +164,12 @@ public class SignUpFragment extends AppCompatActivity{
                     Toast.makeText(SignUpFragment.this, "Congrats! You are now a Traveler!", Toast.LENGTH_SHORT).show();
                     FirebaseUser firebaseTraveler = signUpAuth.getCurrentUser(); //firebase user object
 
-                    //SAVE USER DATA IN THE DATABASE
+                    //GETTING USER INFORMATION FROM INPUTS AND SETTING IT UP IN THE getTravelersData CONTAINER
                     TravelersData getTravelersData = new TravelersData(full_name, gender, birthdate);
 
-                    //GET USER REFERENCE IN THE DATABASE
+                    //GET OR SET USER REFERENCE IN THE DATABASE
                     DatabaseReference travelerReference = FirebaseDatabase.getInstance().getReference("Travelers");
+                    //WRITING THE DATA IN THE FIREBASE DATABASE
                     travelerReference.child(firebaseTraveler.getUid()).setValue(getTravelersData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

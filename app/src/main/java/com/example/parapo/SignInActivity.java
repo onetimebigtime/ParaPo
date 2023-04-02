@@ -127,7 +127,7 @@ public class SignInActivity extends AppCompatActivity {
                     assert firebaseTraveler != null;
                     if (firebaseTraveler.isEmailVerified()) {
                         Toast.makeText(SignInActivity.this, "Welcome Traveller! Start your Travel with us.", Toast.LENGTH_SHORT).show();
-                        onStart();
+                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
                     }
                     else {
                         firebaseTraveler.sendEmailVerification();
