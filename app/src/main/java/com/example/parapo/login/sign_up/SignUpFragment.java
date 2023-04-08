@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.parapo.MainActivity;
 import com.example.parapo.R;
+import com.example.parapo.SignInActivity;
 import com.google.android.gms.common.api.internal.RegisterListenerMethod;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,6 +49,8 @@ public class SignUpFragment extends AppCompatActivity{
     private RadioButton signUpGenderReveal;
     private EditText signUpFullNameText, signUpEmailText, signUpBirthdateText, signUpPasswordText, signUpConfirmPassText;
     private ProgressBar signUpProgressBar;
+    private boolean isOnline;
+    private double latitude, longitude;
     private static final String TAG = "SignUpFragment";
 
     @Override
@@ -60,9 +63,8 @@ public class SignUpFragment extends AppCompatActivity{
         //MESSAGE
         Toast.makeText(SignUpFragment.this, "Sign Up now to become a Traveler", Toast.LENGTH_SHORT).show();
 
-        // Return to Sign In page
-        /*signUpCancelLink = findViewById(R.id.signup_cancel_link);
-        signUpCancelLink.setOnClickListener(this); // Set the value of v in OnClick Function*/
+        // SETTING UP CANCEL LINK
+        signUpCancelLink = findViewById(R.id.signup_cancel_link);
 
         //SETTING UP THE TEXT BOXES
         signUpFullNameText = findViewById(R.id.signup_fullname_text); //FULLNAME TEXTBOX
@@ -70,11 +72,14 @@ public class SignUpFragment extends AppCompatActivity{
         signUpBirthdateText = findViewById(R.id.signup_birthdate_text); //BIRTH TEXTBOX
         signUpPasswordText = findViewById(R.id.signup_password_text); //PASSWORD TEXTBOX
         signUpConfirmPassText = findViewById(R.id.confirmpass_text);
+
         //SETTING UP RADIO GENDER GROUP BUTTON
         signUpGenderRadio = findViewById(R.id.signup_gender_radio);
         signUpGenderRadio.clearCheck();
+
         //SETTING UP PROGRESS BAR
         signUpProgressBar = findViewById(R.id.signup_progressbar);
+
         //SETTING UP SIGN UP BUTTON
         Button signUpButton = findViewById(R.id.signup_button);
 
@@ -84,17 +89,26 @@ public class SignUpFragment extends AppCompatActivity{
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
-            birthdatePicker = new DatePickerDialog(SignUpFragment.this, (view, year1, month1, dayOfMonth) -> signUpBirthdateText.setText((month1 +1) + "/" + dayOfMonth + "/" + year1), month,day,year);
+            birthdatePicker = new DatePickerDialog(SignUpFragment.this, (view, year1900, month1, dayOfMonth) -> signUpBirthdateText.setText((month1 +1) + "/" + dayOfMonth + "/" + year1900), month,day,year);
             birthdatePicker.show();
         });
         //-------------------------------SETTING UP A DATE PICKER ON CLICK FUNCTION SECTION---------------------------------
 
         //1----------------------------------SIGN UP BUTTON ON CLICK FUNCTION SECTION---------------------------------------------------
         signUpButton.setOnClickListener(v -> {
+
+            //USER INDICATOR IF ONLINE
+            isOnline = false;
+
+            //USER DEFAULT LOCATION
+            latitude = 0d;
+            longitude = 0d;
+
             //GENDER REVEAL
             int genderReveal = signUpGenderRadio.getCheckedRadioButtonId();
             signUpGenderReveal = findViewById(genderReveal);
 
+            //BASIC USER INFORMATION
             String full_name = signUpFullNameText.getText().toString().trim();
             String email = signUpEmailText.getText().toString().trim();
             String birthdate = signUpBirthdateText.getText().toString().trim();
@@ -144,14 +158,28 @@ public class SignUpFragment extends AppCompatActivity{
                 String gender = signUpGenderReveal.getText().toString();
                 signUpProgressBar.setVisibility(View.VISIBLE);
                 //1--SIGNING UP TRAVELERS
-                signUpTraveler(full_name, email, birthdate, gender, password);
+                signUpTraveler(full_name, email, birthdate, gender, password, latitude, longitude, isOnline);
 
             }
         });
         //1----------------------------------SIGN UP BUTTON ON CLICK FUNCTION SECTION---------------------------------------------------
+        //1----------------------------------CANCEL LINK ON CLICK FUNCTION SECTION---------------------------------------------------
+        signUpCancelLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(SignUpFragment.this, SignInActivity.class );
+
+                //Prevent user from returning back to register
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); //END SIGNUP ACTIVITY
+            }
+        });
+        //1----------------------------------CANCEL LINK ON CLICK FUNCTION SECTION---------------------------------------------------
     }
     //1------------------------------------SIGNING UP TRAVELERS METHOD SECTION-----------------------------------------------------------
-    private void signUpTraveler(String full_name, String email, String birthdate, String gender, String password) {
+    private void signUpTraveler(String full_name, String email, String birthdate, String gender, String password, double latitude, double longitude, boolean isOnline) {
         //Firebase initiation
         FirebaseAuth signUpAuth = FirebaseAuth.getInstance(); // Firebase object
 
@@ -162,22 +190,23 @@ public class SignUpFragment extends AppCompatActivity{
                 //IF THE CREATION OF EMAIL AND PASSWORD TO THE DATABASE IS SUCCESSFUL
                 if(task.isSuccessful()){
                     Toast.makeText(SignUpFragment.this, "Congrats! You are now a Traveler!", Toast.LENGTH_SHORT).show();
-                    FirebaseUser firebaseTraveler = signUpAuth.getCurrentUser(); //firebase user object
+                    FirebaseUser firebaseUser = signUpAuth.getCurrentUser(); //GET CURRENT USER IN FIREBASE
+                    String userId = firebaseUser.getUid(); //GET USER ID IN FIREBASE
 
-                    //GETTING USER INFORMATION FROM INPUTS AND SETTING IT UP IN THE getTravelersData CONTAINER
-                    TravelersData getTravelersData = new TravelersData(full_name, gender, birthdate);
+                    //GETTING USER INFORMATION FROM INPUTS AND SETTING IT UP IN THE setTravelersData CONTAINER
+                    TravelersData setTravelersData = new TravelersData(userId,full_name, birthdate, gender, latitude, longitude, isOnline);
 
                     //GET OR SET USER REFERENCE IN THE DATABASE
-                    DatabaseReference travelerReference = FirebaseDatabase.getInstance().getReference("Travelers");
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Travelers");
                     //WRITING THE DATA IN THE FIREBASE DATABASE
-                    travelerReference.child(firebaseTraveler.getUid()).setValue(getTravelersData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    databaseReference.child(userId).setValue(setTravelersData).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             //IF THE USERS DETAILS IS SUCCESSFUL SAVE IN THE FIREBASE DATABASE
                             if (task.isSuccessful()){
-                                // Send Verification
-                                firebaseTraveler.sendEmailVerification();
-                                Toast.makeText(SignUpFragment.this, "Traveler, please verify your email", Toast.LENGTH_SHORT).show();
+                                // SEND A VERIFICATION IN YOUR EMAIL
+                                //firebaseUser.sendEmailVerification();
+                                //Toast.makeText(SignUpFragment.this, "Traveler, please verify your email", Toast.LENGTH_SHORT).show();
 
                                 //CREATING AN INTENT TO OPEN MAIN ACTIVITY
                                 Intent intent =new Intent(SignUpFragment.this, MainActivity.class );

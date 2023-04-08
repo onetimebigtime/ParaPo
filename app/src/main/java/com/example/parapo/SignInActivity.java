@@ -39,6 +39,7 @@ public class SignInActivity extends AppCompatActivity {
     private EditText signInEmailText, signInPasswordText;
     private ProgressBar signInProgressBar;
     private FirebaseAuth signInAuth;
+    private PopUpAlert popUpAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class SignInActivity extends AppCompatActivity {
             } catch (Exception e){
                 String title = "Something Went Wrong!";
                 String message = "Something went wrong while we are loading sign up page. Please check your internet connection and try again.";
-                popUpAlert(title, message);
+                popUpAlert = new PopUpAlert(title, message, this);
             }
         });
         //----------------------------------TO SIGN UP BUTTON ON CLICK FUNCTION SECTION-----------------------------------------
@@ -120,26 +121,13 @@ public class SignInActivity extends AppCompatActivity {
         signInAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(SignInActivity.this, task -> {
             if (task.isSuccessful()) {
                 try {
-                    //GET THE CURRENT USER FROM THE FIREBASE
-                    FirebaseUser firebaseTraveler = signInAuth.getCurrentUser();
+                    Toast.makeText(SignInActivity.this, "Welcome Traveller! Start your Travel with us.", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(SignInActivity.this, MainActivity.class));
 
-                    //CHECK IF EMAIL IS VERIFIED
-                    assert firebaseTraveler != null;
-                    if (firebaseTraveler.isEmailVerified()) {
-                        Toast.makeText(SignInActivity.this, "Welcome Traveller! Start your Travel with us.", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                    }
-                    else {
-                        firebaseTraveler.sendEmailVerification();
-                        signInAuth.signOut();
-                        String title = "Verify Email First";
-                        String message = "Please verify your email before you can log in again. Thank you!";
-                        popUpAlert(title, message);
-                    }
                 } catch (Exception e) {
                     String title = "Something Went Wrong!";
                     String message = "Something went wrong while we are trying to log you in. Please check your internet connection and try again.";
-                    popUpAlert(title, message);
+                    popUpAlert = new PopUpAlert(title, message, this);
                 }
             }
             else {
@@ -149,7 +137,7 @@ public class SignInActivity extends AppCompatActivity {
                 catch (FirebaseAuthInvalidUserException e) {
                     String title = "Unknown Traveler";
                     String message = "Can't find Traveler account! Make sure that you have a valid account to use ParaPo.";
-                    popUpAlert(title, message);
+                    popUpAlert = new PopUpAlert(title, message, this);
                     signInEmailText.setError("Traveler doesn't exist!");
                     signInEmailText.requestFocus();
                 }
@@ -169,35 +157,6 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
     //1--------------------------------------SIGNING IN USER FUNCTION SECTION------------------------------------------------------
-
-    //------------------------------------------POP ALERT FUNCTION SECTION--------------------------------------------------
-    private void popUpAlert(String title, String message) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SignInActivity.this);
-        alertDialog.setTitle(title);
-        alertDialog.setMessage(message);
-        if (Objects.equals(title, "Verify Email First")) {
-            alertDialog.setPositiveButton("Continue", (dialog, which) -> {
-                //OPEN EMAIL APPS AFTER CLICKING CONTINUE BUTTON
-                try {
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-                catch (Exception e) {
-                    Toast.makeText(SignInActivity.this, "No Email application found in your device, please install it or use browser to verify your account.", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-        else {
-            alertDialog.setNegativeButton("Cancel", (dialog, which) -> finish());
-            alertDialog.setPositiveButton("Continue", (dialog, which) -> dialog.cancel());
-        }
-        AlertDialog popAlertDialog = alertDialog.create();
-        popAlertDialog.show();
-    }
-    //------------------------------------------POP ALERT FUNCTION SECTION--------------------------------------------------
 
     //--------------------------------------ON START FUNCTION SECTION---------------------------------------------------
     //REPLACING THE ACTIVITY THAT IS ON AN ON_START STATE AFTER A SUCCESSFUL SIGN IN
