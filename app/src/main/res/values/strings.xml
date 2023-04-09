@@ -30,4 +30,7 @@
     <string name="male">Male</string>
     <string name="text_18">14sp</string>
     <string name="text_16">16sp</string>
+
+    <string name="hail">HAIL</string>
+    <string name="hailing">HAILING</string>
 </resources>

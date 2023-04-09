@@ -12,7 +12,7 @@ public class TrackViewModel extends ViewModel {
     //private TrackEx ex;
     public String text1;
     public void sample(){
-        text1 = "What is fragmen";
+        text1 = "What is fragment";
         mText.setValue(text1);
     }
 
