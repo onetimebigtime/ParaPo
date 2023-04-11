@@ -33,4 +33,12 @@
 
     <string name="hail">HAIL</string>
     <string name="hailing">HAILING</string>
+
+    <string name="plate_number_label">Plate No.:</string>
+    <string name="route_label">Route:</string>
+    <string name="seat_count_label">Seat:</string>
+    <string name="location_label">Location:</string>
+    <string name="plate_number">ABC 123</string>
+    <string name="route">Place</string>
+    <string name="seat_count">0</string>
 </resources>

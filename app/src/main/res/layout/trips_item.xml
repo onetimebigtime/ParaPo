@@ -10,74 +10,114 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical">
-        <!--FULL NAME CONTAINER-->
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView_user_profile"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/ic_channel_driver"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="5dp" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
+            android:layout_marginStart="5dp"
+            android:orientation="vertical">
+            <!--ROUTE CONTAINER-->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fullname_label"
-                android:textSize="18dp" />
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/trips_fullname"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/route_label"/>
+
+                <TextView
+                    android:id="@+id/trips_route"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:text="@string/route"/>
+            </LinearLayout>
+            <!--ROUTE CONTAINER-->
+
+            <!--PLATE NUMBER CONTAINER-->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="@string/fullname"/>
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/plate_number_label"/>
+
+                <TextView
+                    android:id="@+id/trips_plate_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:text="@string/plate_number"/>
+            </LinearLayout>
+            <!--PLATE NUMBER CONTAINER-->
+
+            <!--SEAT COUNT CONTAINER-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/seat_count_label"/>
+
+                <TextView
+                    android:id="@+id/trips_seat_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:text="@string/seat_count"/>
+            </LinearLayout>
+            <!--SEAT COUNT CONTAINER-->
+
+            <!--LOCATION CONTAINER-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location_label"/>
+
+                <TextView
+                    android:id="@+id/trips_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="18sp"
+                    android:text="@string/seat_count"/>
+            </LinearLayout>
+            <!--LOCATION CONTAINER-->
         </LinearLayout>
-        <!--FULL NAME CONTAINER-->
-
-        <!--BIRTHDAY CONTAINER-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/birthdate_label"
-                android:textSize="18dp"/>
-
-            <TextView
-                android:id="@+id/trips_birthday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="@string/birthday"/>
-        </LinearLayout>
-        <!--BIRTHDAY CONTAINER-->
-
-        <!--GENDER CONTAINER-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gender"
-                android:textSize="18dp"
-                />
-
-            <TextView
-                android:id="@+id/trips_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="@string/gender"/>
-        </LinearLayout>
-        <!--GENDER CONTAINER-->
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

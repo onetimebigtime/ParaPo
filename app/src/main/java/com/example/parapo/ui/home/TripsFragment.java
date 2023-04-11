@@ -1,5 +1,6 @@
 package com.example.parapo.ui.home;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,9 @@ public class TripsFragment extends Fragment {
 
         binding = FragmentTripsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        /*
+
         recyclerView = root.findViewById(R.id.trips_list);
-        databaseReference = FirebaseDatabase.getInstance().getReference("Travelers");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Drivers");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.requireActivity()));
         list = new ArrayList<>();
@@ -49,21 +50,27 @@ public class TripsFragment extends Fragment {
         recyclerView.setAdapter(tripsAdapter);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     TripsUser tripsUser = dataSnapshot.getValue(TripsUser.class);
-                    list.add(tripsUser);
+                    assert tripsUser != null;
+                    boolean isOnline = tripsUser.isIs_online();
+                    if (isOnline){
+                        list.add(tripsUser);
+                    }
                 }
                 tripsAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(getContext(), "An error occurred!", Toast.LENGTH_SHORT).show();
             }
         });
-         */
+
         /*final TextView textView = binding.textTrip;
         tripsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);*/
         return root;

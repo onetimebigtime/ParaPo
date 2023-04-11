@@ -11,9 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.parapo.BuildConfig;
 import com.example.parapo.R;
 import com.example.parapo.databinding.FragmentTrackBinding;
+import com.example.parapo.login.sign_up.SignUpFragment;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,15 +46,18 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.CancellationTokenSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class TrackFragment extends Fragment {
+    public static final String TAG = "TrackFragment";
     private FragmentTrackBinding binding;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch hailButton;
@@ -73,9 +79,36 @@ public class TrackFragment extends Fragment {
         hailButton = root.findViewById(R.id.hail_button);
         latTextView = root.findViewById(R.id.lat_textView);
         longTextView = root.findViewById(R.id.long_textView);
+        FloatingActionButton selfLocateButton = root.findViewById(R.id.floatingActionButton2);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity());
         //-----------------SETTING UP THE COMPONENTS----------------------
+
+        //-----------------SELF LOCATE BUTTON ON CLICK FUNCTION SECTION----------------------
+        selfLocateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (hasLocationPermissions()){
+                    getCurrentLocation();
+                }
+                else{
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+                        //DIALOG BOX STRINGS
+                        String title = "Location Permission Request";
+                        String message = "ParaPo needs your location to use our services";
+                        String posTitle = "Enable";
+                        String negTitle = "Cancel";
+                        showAlertDialog(title, message, posTitle, (dialog, which) -> multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION}), negTitle);
+                    }
+                    else {
+                        multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION});
+                    }
+                }
+            }
+        });
+        //-----------------SELF LOCATE BUTTON ON CLICK FUNCTION SECTION----------------------
 
         //--------------------HAIL BUTTON ON CLICK FUNCTION SECTION------------------------
         hailButton.setOnClickListener(v -> {
@@ -210,7 +243,12 @@ public class TrackFragment extends Fragment {
             }
             else {
                 //TRY CATCH INSERT
-                task.getException().printStackTrace();
+                try {
+                    throw Objects.requireNonNull(task.getException());
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    Toast.makeText(this.requireActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

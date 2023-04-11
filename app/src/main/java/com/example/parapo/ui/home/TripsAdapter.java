@@ -1,5 +1,6 @@
 package com.example.parapo.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +31,14 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
         return new TripsViewHolder(listView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull TripsViewHolder holder, int position) {
         TripsUser tripsUser = list.get(position);
-        holder.fullName.setText(tripsUser.getFull_name());
-        holder.birthday.setText(tripsUser.getBirthday());
-        holder.gender.setText(tripsUser.getGender());
+        holder.route.setText(tripsUser.getRoute());
+        holder.plateNumber.setText(tripsUser.getPlate_number());
+        holder.seatCount.setText(String.valueOf(tripsUser.getSeatCount())+"/"+"10");
+        holder.location.setText(String.valueOf(tripsUser.getLatitude()) +", "+ String.valueOf(tripsUser.getLongitude()));
     }
 
     @Override
@@ -44,14 +47,14 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
     }
 
     public static class TripsViewHolder extends RecyclerView.ViewHolder{
-        TextView fullName, birthday, gender;
+        TextView route, plateNumber, seatCount, location;
 
         public TripsViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            fullName = itemView.findViewById(R.id.trips_fullname);
-            birthday = itemView.findViewById(R.id.trips_birthday);
-            gender = itemView.findViewById(R.id.trips_gender);
+            route = itemView.findViewById(R.id.trips_route);
+            plateNumber = itemView.findViewById(R.id.trips_plate_number);
+            seatCount = itemView.findViewById(R.id.trips_seat_count);
+            location = itemView.findViewById(R.id.trips_location);
         }
     }
 }
