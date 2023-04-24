@@ -33,6 +33,7 @@
 
     <string name="hail">HAIL</string>
     <string name="hailing">HAILING</string>
+    <string name="self_locate">My Location</string>
 
     <string name="plate_number_label">Plate No.:</string>
     <string name="route_label">Route:</string>

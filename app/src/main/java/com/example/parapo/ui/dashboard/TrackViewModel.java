@@ -1,6 +1,5 @@
 package com.example.parapo.ui.dashboard;
 
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,22 +7,23 @@ import androidx.lifecycle.ViewModel;
 
 public class TrackViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
-    //private TrackEx ex;
-    public String text1;
-    public void sample(){
-        text1 = "What is fragment";
-        mText.setValue(text1);
+    private final MutableLiveData<Double> mLatitude = new MutableLiveData<>();
+
+
+    private final MutableLiveData<Double> mLongitude = new MutableLiveData<>();
+
+    public void setmLatitude(double latitude) {
+        mLatitude.setValue(latitude);
     }
 
-    public TrackViewModel() {
-        mText = new MutableLiveData<>();
-        //String sample = "This is a fragment";
-        //ex = new TrackEx(sample);
-        sample();
+    public void setmLongitude(double longitude) {
+        mLongitude.setValue(longitude);
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<Double> getmLatitude() {
+        return mLatitude;
+    }
+    public LiveData<Double> getmLongitude() {
+        return mLongitude;
     }
 }

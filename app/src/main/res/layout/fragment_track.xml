@@ -10,46 +10,38 @@
         android:id="@+id/floatingActionButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/main_color"
         android:clickable="true"
-        android:contentDescription="TODO"
-        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="@string/self_locate"
+        android:focusable="true"
+        android:src="@android:drawable/ic_menu_mylocation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintHorizontal_bias="0.895"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82" />
+        app:layout_constraintVertical_bias="0.72" />
 
-    <TextView
-        android:id="@+id/lat_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/long_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lat_textView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Switch
+    <ToggleButton
         android:id="@+id/hail_button"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:text="Hail"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:background="@drawable/toggle_button_color"
+        android:drawablePadding="15dp"
+        android:textOff="@string/hail"
+        android:textOn="@string/hail"
+        android:textColor="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.896"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton2"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </org.osmdroid.views.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

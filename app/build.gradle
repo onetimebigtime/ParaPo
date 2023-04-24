@@ -33,13 +33,19 @@ android {
 }
 
 dependencies {
+    //TRY
+    implementation 'org.osmdroid:osmdroid-android:6.1.16'
+    implementation 'org.osmdroid:osmdroid-wms:6.1.16'
+    implementation 'org.osmdroid:osmdroid-mapsforge:6.1.16'
+    //TRY
+
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-    implementation 'com.google.firebase:firebase-auth:21.1.0'
-    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-database:20.1.0'
-    implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
-    implementation 'com.google.firebase:firebase-firestore:24.4.5'
+    implementation 'com.google.firebase:firebase-auth:21.3.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-database:20.2.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.0'
+    implementation 'com.google.firebase:firebase-firestore:24.5.0'
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {

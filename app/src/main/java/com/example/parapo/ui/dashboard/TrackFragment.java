@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,25 +16,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Switch;
-import android.widget.TextView;
+
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.parapo.BuildConfig;
+
 import com.example.parapo.R;
 import com.example.parapo.databinding.FragmentTrackBinding;
-import com.example.parapo.login.sign_up.SignUpFragment;
+import com.example.parapo.ui.home.TripsUser;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.CurrentLocationRequest;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.Granularity;
 import com.google.android.gms.location.LocationCallback;
@@ -43,28 +46,48 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.Priority;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.CancellationTokenSource;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+import com.google.firebase.database.ValueEventListener;
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
+import java.util.Map;
+
 
 
 public class TrackFragment extends Fragment {
     public static final String TAG = "TrackFragment";
     private FragmentTrackBinding binding;
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private Switch hailButton;
-    private TextView latTextView, longTextView;
+
+    private ToggleButton hailButton;
 
     private FusedLocationProviderClient fusedLocationClient; //GIVE LOCATION
     private final static int REQUEST_CODE = 100;
+
+    private Drawable tripsIcon;
+    private Map<String, Marker> markers;
+    private IMapController mapController;
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    private List<GeoPoint> geoPointList;
+    GeoPoint startPoint;
+    private MapView mapView;
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
+    private MyLocationNewOverlay myLocationNewOverlay;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,80 +98,144 @@ public class TrackFragment extends Fragment {
         View root = binding.getRoot();
 
         //-----------------SETTING UP THE COMPONENTS----------------------
-        //ADD MAP HERE
-        hailButton = root.findViewById(R.id.hail_button);
-        latTextView = root.findViewById(R.id.lat_textView);
-        longTextView = root.findViewById(R.id.long_textView);
-        FloatingActionButton selfLocateButton = root.findViewById(R.id.floatingActionButton2);
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.requireActivity());
         //-----------------SETTING UP THE COMPONENTS----------------------
 
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Configuration.getInstance().setUserAgentValue(this.requireActivity().getPackageName());
+
+        //----EDIT****************************
+        //-----INITIALIZE COMPONENTS-----------------------------------------------------------------
+        FloatingActionButton selfLocateButton = view.findViewById(R.id.floatingActionButton2);
+        hailButton = view.findViewById(R.id.hail_button);
+
+        tripsIcon = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_trips_icon);
+        mapView = view.findViewById(R.id.map);
+        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setClickable(true);
+        mapView.setMultiTouchControls(true);
+        mapController = mapView.getController();
+
+        // Initialize List of GeoPoints
+        geoPointList = new ArrayList<>();
+        markers = new HashMap<>();
+        //-----INITIALIZE COMPONENTS-----------------------------------------------------------------
+
+        setDefaultView(mapController);
+
+        myLocationNewOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(this.requireActivity()),mapView);
+
+        getRealtimeMarker();
         //-----------------SELF LOCATE BUTTON ON CLICK FUNCTION SECTION----------------------
-        selfLocateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (hasLocationPermissions()){
-                    getCurrentLocation();
-                }
-                else{
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
-                        //DIALOG BOX STRINGS
-                        String title = "Location Permission Request";
-                        String message = "ParaPo needs your location to use our services";
-                        String posTitle = "Enable";
-                        String negTitle = "Cancel";
-                        showAlertDialog(title, message, posTitle, (dialog, which) -> multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION}), negTitle);
-                    }
-                    else {
-                        multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION});
-                    }
-                }
+        selfLocateButton.setOnClickListener(v -> {
+            if (hasLocationPermissions()){
+                getMyLocation();
+                getRealtimeLocation();
             }
+            getLocationPermissions();
         });
         //-----------------SELF LOCATE BUTTON ON CLICK FUNCTION SECTION----------------------
 
         //--------------------HAIL BUTTON ON CLICK FUNCTION SECTION------------------------
         hailButton.setOnClickListener(v -> {
             if (hailButton.isChecked()) {
-                if (hasLocationPermissions()){
+                if (hailButton.isChecked() && hasLocationPermissions()){
                     getRealtimeLocation();
+                    getMyLocation();
+                    updateOnlineData(true);
+                    Toast.makeText(requireActivity(), "You are now visible. Wait for a jeep to come", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
-                        //DIALOG BOX STRINGS
-                        String title = "Location Permission Request";
-                        String message = "ParaPo needs your location to use our services";
-                        String posTitle = "Enable";
-                        String negTitle = "Cancel";
-                        showAlertDialog(title, message, posTitle, (dialog, which) -> multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION}), negTitle);
-                    }
-                    else {
-                        multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION});
-                    }
+                    getLocationPermissions();
                 }
             }
             else{
+                Toast.makeText(requireActivity(), "You're now offline!", Toast.LENGTH_SHORT).show();
                 //INPUT LOCATION TO ZERO
-                double latitude = 0;
-                double longitude = 0;
-                boolean isOnline = false;
+                double defaultVal = 0;
+                updateOnlineData(false);
 
-                latTextView.setText(String.valueOf(latitude));
-                longTextView.setText(String.valueOf(longitude));
-
-                updateUserData(latitude, longitude, isOnline);
+                myLocationNewOverlay.disableMyLocation();
                 fusedLocationClient.removeLocationUpdates(locationCallback);
+                updateLocationData(defaultVal, defaultVal);
             }
         });
         //--------------------HAIL BUTTON ON CLICK FUNCTION SECTION------------------------
 
-        return root;
+        //--------------------DRIVERS LOCATION ON CLICK FUNCTION------------------------
+        String REQUEST_KEY = "requestKey";
+        getParentFragmentManager().setFragmentResultListener(REQUEST_KEY, this, (requestKey, result) -> {
+            double latitude = result.getDouble("Latitude");
+            double longitude = result.getDouble("Longitude");
+
+            GeoPoint driverPoint = new GeoPoint(latitude, longitude);
+            mapController.animateTo(driverPoint);
+            mapController.setZoom(20.0);
+            mapController.setCenter(driverPoint);
+
+        });
+        //--------------------DRIVERS LOCATION ON CLICK FUNCTION------------------------
     }
+
+
+    //-----------------UPDATE DRIVER REALTIME MARKER LOCATION--------------------------------------
+
+    private void getRealtimeMarker() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Drivers");
+        valueEventListener = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                geoPointList.clear();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
+                    TripsUser tripsUser = dataSnapshot.getValue(TripsUser.class);
+                    String userId = dataSnapshot.getKey();
+                    assert tripsUser != null;
+                    boolean isOnline = tripsUser.isIs_online();
+
+                    if (isOnline) {
+                        double latitude = tripsUser.getLatitude();
+                        double longitude = tripsUser.getLongitude();
+
+                        GeoPoint geoPoint = new GeoPoint(latitude, longitude);
+                        geoPointList.add(geoPoint);
+
+                        //UPDATE OR ADD MARKER
+                        Marker marker = markers.get(userId);
+
+                        if (marker == null) {
+                            marker = new Marker(mapView);
+                            marker.setIcon(tripsIcon);
+                            mapView.getOverlays().add(marker);
+                            markers.put(userId, marker);
+                        }
+
+                        marker.setPosition(geoPoint);
+                        marker.setTitle(userId);
+                    }else {
+                        Marker marker = markers.get(userId);
+                        if (marker != null) {
+                            mapView.getOverlays().remove(marker);
+                            markers.remove(userId);
+                        }
+                    }
+                }
+                mapView.invalidate();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "DatabaseError" +error.getMessage());
+            }
+        };
+    }
+
+    //-----------------UPDATE DRIVER REALTIME MARKER LOCATION--------------------------------------
 
     //-----------------GET USERS REALTIME LOCATION--------------------------------------
     @SuppressLint("MissingPermission")
@@ -180,11 +267,94 @@ public class TrackFragment extends Fragment {
                 }
             }
         });
+
+
     }
     //-----------------GET USERS REALTIME LOCATION--------------------------------------
 
-    //---------------------SEE IF USER HAS LOCATION PERMISSION ENABLED-----------------------
+    //--------LOCATION CALL BACK----------------------------
 
+    LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(@NonNull LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            Location location = locationResult.getLastLocation();
+
+            if (location != null) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                mapController.setZoom(18.0);
+                startPoint = new GeoPoint(latitude, longitude);
+                mapController.setCenter(startPoint);
+                mapController.animateTo(startPoint);
+                //UPDATING USER DATA
+                updateLocationData(latitude, longitude);
+            }
+
+        }
+    };
+    //--------LOCATION CALL BACK----------------------------
+    public void setDefaultView(IMapController mapController) {
+        if (hasLocationPermissions()){
+            mapController.setZoom(10.0);
+            GeoPoint startPoint = new GeoPoint(14.3194, 120.9190); // ADAMSON
+            mapController.setCenter(startPoint);
+        } else if (!hasLocationPermissions()) {
+            mapController.setZoom(10.0);
+            GeoPoint startPoint = new GeoPoint(14.3194, 120.9190); // ADAMSON
+            mapController.setCenter(startPoint);
+        }
+    }
+
+
+    //-----------GET MY LOCATION------------------------
+    private void getMyLocation(){
+        myLocationNewOverlay.enableMyLocation();
+        mapView.getOverlays().add(myLocationNewOverlay);
+        myLocationNewOverlay.enableFollowLocation();
+    }
+    //-----------GET MY LOCATION------------------------
+
+    //Tangal
+    //-----------GET CURRENT LOCATION------------------------
+   /* @SuppressLint("MissingPermission")
+    private void getCurrentLocation(){
+        getLocationPermissions();
+        if (hasLocationPermissions()) {
+            CurrentLocationRequest currentLocationRequest = new CurrentLocationRequest.Builder()
+                    .setGranularity(Granularity.GRANULARITY_FINE)
+                    .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                    .setDurationMillis(5000)
+                    .setMaxUpdateAgeMillis(0)
+                    .build();
+
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            fusedLocationClient.getCurrentLocation(currentLocationRequest, cancellationTokenSource.getToken()).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    Location location = task.getResult();
+                    if (location != null) {
+                        double mlatitude = location.getLatitude();
+                        double mlongitude = location.getLongitude();
+                    }
+                }
+                else {
+                    //TRY CATCH INSERT
+                    if (task.getException() instanceof ResolvableApiException) {
+                        try {
+                            ResolvableApiException resolvableApiException = (ResolvableApiException) task.getException();
+                            resolvableApiException.startResolutionForResult(requireActivity(),REQUEST_CODE);
+                        } catch (IntentSender.SendIntentException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            });
+        }
+
+    }*/
+    //-----------GET CURRENT LOCATION------------------------
+
+    //---------------------SEE IF USER HAS LOCATION PERMISSION ENABLED-----------------------
     private boolean hasLocationPermissions() {
         return ActivityCompat.checkSelfPermission(this.requireActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -192,6 +362,24 @@ public class TrackFragment extends Fragment {
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
     //---------------------SEE IF USER HAS LOCATION PERMISSION ENABLED-----------------------
+
+    //---------------------GET LOCATION PERMISSION ENABLED-----------------------
+    private void getLocationPermissions() {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)){
+            //DIALOG BOX STRINGS
+            String title = "Location Permission Request";
+            String message = "ParaPo needs your location to use our services";
+            String posTitle = "Enable";
+            String negTitle = "Cancel";
+            showAlertDialog(title, message, posTitle, (dialog, which) -> multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}), negTitle);
+        }
+        else {
+            multiplePermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION});
+        }
+    }
+    //---------------------GET LOCATION PERMISSION ENABLED-----------------------
 
     //---------------------SHOW ALERT DIALOG BOX SECTION-----------------------
     void showAlertDialog(String title, String message,
@@ -224,74 +412,23 @@ public class TrackFragment extends Fragment {
     });
     //--------------------LAUNCH PERMISSION IF LOCATION PERMISSION IS STILL NOT GRANTED-------------------------------
 
-    //-----------GET CURRENT LOCATION------------------------
-    @SuppressLint("MissingPermission")
-    private void getCurrentLocation(){
-        CurrentLocationRequest currentLocationRequest = new CurrentLocationRequest.Builder()
-                .setGranularity(Granularity.GRANULARITY_FINE)
-                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-                .setDurationMillis(5000)
-                .setMaxUpdateAgeMillis(0)
-                .build();
 
-        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        fusedLocationClient.getCurrentLocation(currentLocationRequest, cancellationTokenSource.getToken()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                Location location = task.getResult();
-                latTextView.setText(String.valueOf(location.getLatitude()));
-                longTextView.setText(String.valueOf(location.getLongitude()));
-            }
-            else {
-                //TRY CATCH INSERT
-                try {
-                    throw Objects.requireNonNull(task.getException());
-                } catch (Exception e) {
-                    Log.e(TAG, e.getMessage());
-                    Toast.makeText(this.requireActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+    //--------UPDATE USER FUNCTION----------------------------
+    private void updateLocationData(double latitude, double longitude) {
 
-            }
-        });
-    }
-    //-----------GET CURRENT LOCATION------------------------
-
-    //--------LOCATION CALL BACK----------------------------
-    LocationCallback locationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(@NonNull LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-            Location location = locationResult.getLastLocation();
-            if (location != null) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                boolean isOnline = true;
-
-                latTextView.setText(String.valueOf(latitude));
-                longTextView.setText(String.valueOf(longitude));
-
-                //UPDATING USER DATA
-                updateUserData(latitude, longitude, isOnline);
-            }
-
-        }
-    };
-
-    @SuppressWarnings("unchecked")
-    private void updateUserData(double latitude, double longitude, boolean isOnline) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser == null) {
             Toast.makeText(this.requireActivity(), "Unable to find user!", Toast.LENGTH_SHORT).show();
         }
         else {
-            HashMap userData = new HashMap();
+            HashMap<String, Object> userData = new HashMap<>();
             userData.put("latitude", latitude);
             userData.put("longitude", longitude);
-            userData.put("is_online", isOnline);
             String userId = firebaseUser.getUid();
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Travelers");
 
-            databaseReference.child(userId).updateChildren(userData).addOnCompleteListener((OnCompleteListener<Void>) task -> {
+            databaseReference.child(userId).updateChildren(userData).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
 
                 } else {
@@ -301,10 +438,64 @@ public class TrackFragment extends Fragment {
         }
     }
 
-    //--------LOCATION CALL BACK----------------------------
+    private void updateOnlineData(boolean isOnline) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        if (firebaseUser != null) {
+            HashMap<String, Object> userDataOnline = new HashMap<>();
+            userDataOnline.put("is_online", isOnline);
+            String userId = firebaseUser.getUid();
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Travelers");
+            databaseReference.child(userId).updateChildren(userDataOnline).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+
+                }
+                else {
+                    Toast.makeText(requireActivity(), "Can't Complete the task!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+        else {
+            Toast.makeText(this.requireActivity(), "Unable to find user!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    //--------UPDATE USER FUNCTION----------------------------
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+        myLocationNewOverlay.enableMyLocation();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+        myLocationNewOverlay.disableMyLocation();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        databaseReference.addValueEventListener(valueEventListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        databaseReference.removeEventListener(valueEventListener);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        hailButton.setOnCheckedChangeListener(null);
         binding = null;
     }
+
 }
