@@ -109,12 +109,12 @@ public class TrackFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Configuration.getInstance().setUserAgentValue(this.requireActivity().getPackageName());
 
-        //----EDIT****************************
+
         //-----INITIALIZE COMPONENTS-----------------------------------------------------------------
         FloatingActionButton selfLocateButton = view.findViewById(R.id.floatingActionButton2);
         hailButton = view.findViewById(R.id.hail_button);
 
-        tripsIcon = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_trips_icon);
+        tripsIcon = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_jeep);
         mapView = view.findViewById(R.id.map);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setClickable(true);
@@ -134,7 +134,7 @@ public class TrackFragment extends Fragment {
         //-----------------SELF LOCATE BUTTON ON CLICK FUNCTION SECTION----------------------
         selfLocateButton.setOnClickListener(v -> {
             if (hasLocationPermissions()){
-                getMyLocation();
+                getUserLocation();
                 getRealtimeLocation();
             }
             getLocationPermissions();
@@ -144,9 +144,9 @@ public class TrackFragment extends Fragment {
         //--------------------HAIL BUTTON ON CLICK FUNCTION SECTION------------------------
         hailButton.setOnClickListener(v -> {
             if (hailButton.isChecked()) {
-                if (hailButton.isChecked() && hasLocationPermissions()){
+                if (hasLocationPermissions()){
                     getRealtimeLocation();
-                    getMyLocation();
+                    getUserLocation();
                     updateOnlineData(true);
                     Toast.makeText(requireActivity(), "You are now visible. Wait for a jeep to come", Toast.LENGTH_SHORT).show();
                 }
@@ -231,6 +231,7 @@ public class TrackFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "DatabaseError" +error.getMessage());
+                Toast.makeText(requireActivity(), "Failed to get locations! Check your internet!", Toast.LENGTH_SHORT).show();
             }
         };
     }
@@ -267,8 +268,6 @@ public class TrackFragment extends Fragment {
                 }
             }
         });
-
-
     }
     //-----------------GET USERS REALTIME LOCATION--------------------------------------
 
@@ -283,10 +282,10 @@ public class TrackFragment extends Fragment {
             if (location != null) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                mapController.setZoom(18.0);
+
                 startPoint = new GeoPoint(latitude, longitude);
-                mapController.setCenter(startPoint);
                 mapController.animateTo(startPoint);
+                mapController.setZoom(19.5);
                 //UPDATING USER DATA
                 updateLocationData(latitude, longitude);
             }
@@ -308,51 +307,19 @@ public class TrackFragment extends Fragment {
 
 
     //-----------GET MY LOCATION------------------------
-    private void getMyLocation(){
+    private void getUserLocation(){
         myLocationNewOverlay.enableMyLocation();
-        mapView.getOverlays().add(myLocationNewOverlay);
-        myLocationNewOverlay.enableFollowLocation();
+        if (!mapView.getOverlays().contains(myLocationNewOverlay)) {
+            mapView.getOverlays().add(myLocationNewOverlay);
+            myLocationNewOverlay.enableFollowLocation();
+        }
+        else {
+            mapView.getOverlays().remove(myLocationNewOverlay);
+            mapView.getOverlays().add(myLocationNewOverlay);
+        }
     }
     //-----------GET MY LOCATION------------------------
 
-    //Tangal
-    //-----------GET CURRENT LOCATION------------------------
-   /* @SuppressLint("MissingPermission")
-    private void getCurrentLocation(){
-        getLocationPermissions();
-        if (hasLocationPermissions()) {
-            CurrentLocationRequest currentLocationRequest = new CurrentLocationRequest.Builder()
-                    .setGranularity(Granularity.GRANULARITY_FINE)
-                    .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-                    .setDurationMillis(5000)
-                    .setMaxUpdateAgeMillis(0)
-                    .build();
-
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            fusedLocationClient.getCurrentLocation(currentLocationRequest, cancellationTokenSource.getToken()).addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    Location location = task.getResult();
-                    if (location != null) {
-                        double mlatitude = location.getLatitude();
-                        double mlongitude = location.getLongitude();
-                    }
-                }
-                else {
-                    //TRY CATCH INSERT
-                    if (task.getException() instanceof ResolvableApiException) {
-                        try {
-                            ResolvableApiException resolvableApiException = (ResolvableApiException) task.getException();
-                            resolvableApiException.startResolutionForResult(requireActivity(),REQUEST_CODE);
-                        } catch (IntentSender.SendIntentException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-            });
-        }
-
-    }*/
-    //-----------GET CURRENT LOCATION------------------------
 
     //---------------------SEE IF USER HAS LOCATION PERMISSION ENABLED-----------------------
     private boolean hasLocationPermissions() {
@@ -415,50 +382,31 @@ public class TrackFragment extends Fragment {
 
     //--------UPDATE USER FUNCTION----------------------------
     private void updateLocationData(double latitude, double longitude) {
-
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            Toast.makeText(this.requireActivity(), "Unable to find user!", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            HashMap<String, Object> userData = new HashMap<>();
-            userData.put("latitude", latitude);
-            userData.put("longitude", longitude);
-            String userId = firebaseUser.getUid();
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Travelers");
-
-            databaseReference.child(userId).updateChildren(userData).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-
-                } else {
-                    Toast.makeText(requireActivity(), "Can't Complete the task!", Toast.LENGTH_SHORT).show();
-                }
-            });
+        try {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user == null) {
+                return;
+            }
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Travelers").child(user.getUid());
+            ref.child("latitude").setValue(latitude);
+            ref.child("longitude").setValue(longitude);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to update online status", e);
+            Toast.makeText(requireActivity(), "Failed to update location status!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void updateOnlineData(boolean isOnline) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-
-        if (firebaseUser != null) {
-            HashMap<String, Object> userDataOnline = new HashMap<>();
-            userDataOnline.put("is_online", isOnline);
-            String userId = firebaseUser.getUid();
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Travelers");
-            databaseReference.child(userId).updateChildren(userDataOnline).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-
-                }
-                else {
-                    Toast.makeText(requireActivity(), "Can't Complete the task!", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
-        else {
-            Toast.makeText(this.requireActivity(), "Unable to find user!", Toast.LENGTH_SHORT).show();
+        try {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user == null) {
+                return;
+            }
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Travelers").child(user.getUid());
+            ref.child("is_online").setValue(isOnline);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to update online status", e);
+            Toast.makeText(requireActivity(), "Failed to update online status!", Toast.LENGTH_SHORT).show();
         }
     }
     //--------UPDATE USER FUNCTION----------------------------
