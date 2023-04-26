@@ -137,7 +137,9 @@ public class TrackFragment extends Fragment {
                 getUserLocation();
                 getRealtimeLocation();
             }
-            getLocationPermissions();
+            else {
+                getLocationPermissions();
+            }
         });
         //-----------------SELF LOCATE BUTTON ON CLICK FUNCTION SECTION----------------------
 
@@ -147,7 +149,6 @@ public class TrackFragment extends Fragment {
                 if (hasLocationPermissions()){
                     getRealtimeLocation();
                     getUserLocation();
-                    updateOnlineData(true);
                     Toast.makeText(requireActivity(), "You are now visible. Wait for a jeep to come", Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -197,6 +198,11 @@ public class TrackFragment extends Fragment {
                     String userId = dataSnapshot.getKey();
                     assert tripsUser != null;
                     boolean isOnline = tripsUser.isIs_online();
+                    String route = tripsUser.getRoute();
+                    String plateNo = tripsUser.getPlate_number();
+                    int seatCount = tripsUser.getSeatCount();
+
+                    String description = "Plate No: "+plateNo + "   " + "Seats: " + seatCount +"/10";
 
                     if (isOnline) {
                         double latitude = tripsUser.getLatitude();
@@ -216,7 +222,8 @@ public class TrackFragment extends Fragment {
                         }
 
                         marker.setPosition(geoPoint);
-                        marker.setTitle(userId);
+                        marker.setTitle(route);
+                        marker.setSubDescription(description);
                     }else {
                         Marker marker = markers.get(userId);
                         if (marker != null) {
@@ -286,8 +293,12 @@ public class TrackFragment extends Fragment {
                 startPoint = new GeoPoint(latitude, longitude);
                 mapController.animateTo(startPoint);
                 mapController.setZoom(19.5);
+
                 //UPDATING USER DATA
-                updateLocationData(latitude, longitude);
+                if (hailButton.isChecked()) {
+                    updateOnlineData(true);
+                    updateLocationData(latitude, longitude);
+                }
             }
 
         }
